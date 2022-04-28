@@ -1,0 +1,15 @@
+.main-panel {
+    height: 100%;
+}
+
+.visor-hc {
+    height: 100%;
+    margin-left: 50px;
+    padding: 15px;
+    
+    transition: all .5s ease-out;
+}
+
+.visor-hc.sidebar-open {
+    margin-left: 360px;
+}

@@ -1,0 +1,88 @@
+<mat-toolbar class="row header {{height !== '60px' ? 'expanded' : ''}}" id="header-hc" [ngStyle]="{'height': height}">
+
+    <div class="col-5 col-md-1">
+        <mat-form-field>
+            <mat-label>Tipo documento</mat-label>
+            <mat-select class="selectpicker" data-val="true" 
+            [(ngModel)]="form.nU_IDTIPOIDEN_TIPOIDEN"
+            data-val-number="El campo TipoDocumento debe ser un número." data-val-required="El campo TipoDocumento es obligatorio." id="TipoDocumento" name="TipoDocumento" tabindex="-98">
+                <mat-option [value]="0" selected>CC</mat-option>
+                <mat-option [value]="1">TI</mat-option>
+                <mat-option [value]="2">RC</mat-option>
+                <mat-option [value]="3">CE</mat-option>
+                <mat-option [value]="4">PA</mat-option>
+                <mat-option [value]="5">AS</mat-option>
+                <mat-option [value]="6">MS</mat-option>
+                <mat-option [value]="7">NU</mat-option>
+                <mat-option [value]="8">NIT</mat-option>
+            </mat-select>
+            <mat-icon class="icono-ayuda" matSuffix mat-icon-button matTooltip="Tipo de documento"
+              matTooltipPosition="above">help</mat-icon>
+        </mat-form-field>
+
+    </div>
+    <div class="col-5 col-md-2">
+        <mat-form-field>
+            <mat-label>N. Documento</mat-label>
+            <input matInput type="text" name="NumeroRegistro" [(ngModel)]="form.tX_IDENTIFICACION_AFIL" #nombre
+            (blur)="getAfil(nombre.value)" (keyup.enter)="getAfil(nombre.value)">
+            <mat-icon class="icono-ayuda" matSuffix mat-icon-button matTooltip="Recuerde ingresar un número"
+              matTooltipPosition="above">help</mat-icon>
+        </mat-form-field>
+
+    </div>
+
+    <div class="col-1 d-block d-md-none">
+        <button mat-icon-button (click)="toggleHeaderHeight()">
+          <mat-icon>menu</mat-icon>
+        </button>
+    </div>
+
+    <div class="col-sm col-md-4">
+        <mat-form-field>
+            <mat-label>Nombre</mat-label>
+            <input matInput type="text" name="NumeroRegistro"
+            [(ngModel)]="form.tX_NOMIDENTI_AFIL">
+        </mat-form-field>
+
+    </div>
+    <div class="col-sm-6 col-md-2 d-flex align-items-center">
+        <mat-form-field>
+            <mat-label>Código</mat-label>
+            <input matInput type="text" name="NumeroRegistro" [(ngModel)]="form.codigo">
+        </mat-form-field>
+        
+        <mat-icon class="ml-3">flag</mat-icon>
+        <span>Ámbito</span>
+    </div>
+
+    
+
+   
+
+</mat-toolbar>
+
+<nav class="navbar navbar-expand-lg navbar-light bg-light d-none">
+    <a class="navbar-brand" href="#">Navbar</a>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarTogglerDemo03" aria-controls="navbarTogglerDemo03" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+  
+    <div class="collapse navbar-collapse" id="navbarTogglerDemo03">
+      <ul class="navbar-nav mr-auto mt-2 mt-lg-0">
+        <li class="nav-item active">
+          <a class="nav-link" href="#">Home <span class="sr-only">(current)</span></a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="#">Link</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link disabled">Disabled</a>
+        </li>
+      </ul>
+      <form class="form-inline my-2 my-lg-0">
+        <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search">
+        <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
+      </form>
+    </div>
+  </nav>

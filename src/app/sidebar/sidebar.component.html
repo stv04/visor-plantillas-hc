@@ -1,0 +1,193 @@
+<div class="cover-menu {{open ? 'menu-show' : ''}}">
+    <div id="morph-menu" class="morph-menu" data-morph-open="M-1,0h101c0,0,0-1,0,395c0,404,0,405,0,405H-1V0z">
+        <svg xmlns="http://www.w3.org/2000/svg" width="100%" height="100%" viewBox="0 0 100 800" preserveAspectRatio="none" id="svgMenu">
+            <path d="M-1,0C-1,0,100,0,100,0C100,0,100,-1,100,395C100,799,100,800,100,800C100,800,-1,800,-1,800C-1,800,-1,0,-1,0C-1,0,-1,0,-1,0"></path>
+        <desc>Created with Snap</desc><defs></defs></svg>
+    </div>
+    <div class="m-left mt-4">
+        <div class="tab-content">
+            <app-buscar-historia-clinica></app-buscar-historia-clinica>
+        </div>
+    </div>
+    <button id="closeMenu" (click)="toggleSidebar(false)" mat-button class="close-menu">
+        <mat-icon>close</mat-icon>
+    </button>
+</div>
+
+<!-- //Lista general -->
+<nav class="ltr-nav">
+    
+    <ul class="ltr-nav_list">
+        <li (click)="toggleSidebar(true)" class="ltr-nav_item">
+            <a class="ltr-nav_link btn-menu-hc" href="#">
+                <div class="ltr-nav_section">
+                    <span class="ltr-nav_title">Consultar agenda del día</span>
+                </div>
+            </a>
+            <div class="ltr-nav_icon">
+                <a class="btn-menu-hc" href="#">
+                    <mat-icon class="material-icons">perm_contact_calendar</mat-icon>
+                </a>
+            </div>
+
+        </li>
+
+        <li (click)="toggleSidebar(true)" class="ltr-nav_item">
+            <a class="ltr-nav_link btn-menu-hc" href="#">
+                <div class="ltr-nav_section">
+                    <span class="ltr-nav_title">Buscar historia clínica</span>
+                </div>
+            </a>
+            <div class="ltr-nav_icon">
+                <a class="btn-menu-hc" href="#">
+                    <mat-icon class="material-icons">search</mat-icon>
+                </a>
+            </div>
+
+        </li>
+        <li (click)="toggleSidebar(true)" class="ltr-nav_item">
+            <a class="ltr-nav_link btn-menu-hc" href="#">
+                <div class="ltr-nav_section">
+                    <span class="ltr-nav_title">Vacunación</span>
+                </div>
+            </a>
+            <div class="ltr-nav_icon">
+                <a class="btn-menu-hc" href="#">
+                    <mat-icon class="material-icons">colorize</mat-icon>
+                </a>
+            </div>
+
+        </li>
+        <li (click)="toggleSidebar(true)" class="ltr-nav_item">
+            <a class="ltr-nav_link btn-menu-hc" href="#">
+                <div class="ltr-nav_section">
+                    <span class="ltr-nav_title">Gestión hospitalaria</span>
+                </div>
+            </a>
+            <div class="ltr-nav_icon">
+                <a class="btn-menu-hc" href="#">
+                    <mat-icon class="material-icons">local_hospital</mat-icon>
+                </a>
+            </div>
+
+        </li>
+        <li (click)="toggleSidebar(true)" class="ltr-nav_item">
+            <a class="ltr-nav_link btn-menu-hc" href="#">
+                <div class="ltr-nav_section">
+                    <span class="ltr-nav_title">Resportes</span>
+                </div>
+            </a>
+            <div class="ltr-nav_icon">
+                <a class="btn-menu-hc" href="#">
+                    <mat-icon class="material-icons">ballot</mat-icon>
+                </a>
+            </div>
+
+        </li>
+        <li (click)="toggleSidebar(true)" class="ltr-nav_item">
+            <a class="ltr-nav_link btn-menu-hc" href="#">
+                <div class="ltr-nav_section">
+                    <span class="ltr-nav_title">Apoyo diagnóstico</span>
+                </div>
+            </a>
+            <div class="ltr-nav_icon">
+                <a class="btn-menu-hc" href="#">
+                    <mat-icon class="material-icons">how_to_reg</mat-icon>
+                </a>
+            </div>
+
+        </li>
+        <li (click)="toggleSidebar(true)" class="ltr-nav_item">
+            <a class="ltr-nav_link btn-menu-hc" href="#">
+                <div class="ltr-nav_section">
+                    <span class="ltr-nav_title">Gestión de urgencias</span>
+                </div>
+            </a>
+            <div class="ltr-nav_icon">
+                <a class="btn-menu-hc" href="#">
+                    <mat-icon class="material-icons">control_point</mat-icon>
+                </a>
+            </div>
+
+        </li>
+        <li (click)="toggleSidebar(true)" class="ltr-nav_item">
+            <a class="ltr-nav_link btn-menu-hc" href="#">
+                <div class="ltr-nav_section">
+                    <span class="ltr-nav_title">Archivos de historias clínicas</span>
+                </div>
+            </a>
+            <div class="ltr-nav_icon">
+                <a class="btn-menu-hc" href="#">
+                    <mat-icon class="material-icons">healing</mat-icon>
+                </a>
+            </div>
+
+        </li>
+        <li (click)="toggleSidebar(true)" class="ltr-nav_item">
+            <a class="ltr-nav_link btn-menu-hc" href="#">
+                <div class="ltr-nav_section">
+                    <span class="ltr-nav_title">Esterilización</span>
+                </div>
+            </a>
+            <div class="ltr-nav_icon">
+                <a class="btn-menu-hc" href="#">
+                    <mat-icon class="material-icons">airline_seat_flat</mat-icon>
+                </a>
+            </div>
+
+        </li>
+        <li (click)="toggleSidebar(true)" class="ltr-nav_item">
+            <a class="ltr-nav_link btn-menu-hc" href="#">
+                <div class="ltr-nav_section">
+                    <span class="ltr-nav_title">Convocatorias</span>
+                </div>
+            </a>
+            <div class="ltr-nav_icon">
+                <a class="btn-menu-hc" href="#">
+                    <mat-icon class="material-icons">group_add</mat-icon>
+                </a>
+            </div>
+
+        </li>
+        <li (click)="toggleSidebar(true)" class="ltr-nav_item">
+            <a class="ltr-nav_link btn-menu-hc" href="#">
+                <div class="ltr-nav_section">
+                    <span class="ltr-nav_title">Registro procedimientos</span>
+                </div>
+            </a>
+            <div class="ltr-nav_icon">
+                <a class="btn-menu-hc" href="#">
+                    <mat-icon class="material-icons">restaurant_menu</mat-icon>
+                </a>
+            </div>
+
+        </li>
+        <li (click)="toggleSidebar(true)" class="ltr-nav_item" style="margin-top: 25px;">
+            <a class="ltr-nav_link btn-menu-hc" href="#">
+                <div class="ltr-nav_section">
+                    <span class="ltr-nav_title">Imprimir rótulo</span>
+                </div>
+            </a>
+            <div class="ltr-nav_icon">
+                <a class="btn-menu-hc" href="#">
+                    <mat-icon class="material-icons">aspect_ratio</mat-icon>
+                </a>
+            </div>
+
+        </li>
+        <li (click)="toggleSidebar(true)" class="ltr-nav_item">
+            <a class="ltr-nav_link btn-menu-hc" href="#">
+                <div class="ltr-nav_section">
+                    <span class="ltr-nav_title">Opciones de parametrización</span>
+                </div>
+            </a>
+            <div class="ltr-nav_icon">
+                <a class="btn-menu-hc" href="#">
+                    <mat-icon class="material-icons">my_location</mat-icon>
+                </a>
+            </div>
+
+        </li>
+
+    </ul>
+</nav>

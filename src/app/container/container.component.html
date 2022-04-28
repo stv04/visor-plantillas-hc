@@ -1,0 +1,6 @@
+<div class="container-hc">
+    <app-sidebar [open]="sidebarIsOpen" 
+    (toggleSidebarEvent)="toggleSidebar($event)"
+    ></app-sidebar>
+    <app-content [sidebarOpen]="sidebarIsOpen" ></app-content>
+</div>

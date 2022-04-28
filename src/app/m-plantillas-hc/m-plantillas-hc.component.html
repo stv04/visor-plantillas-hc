@@ -1,0 +1,19 @@
+<h1 mat-dialog-title>formularios</h1>
+<div mat-dialog-content>
+    <mat-spinner *ngIf="!formularios.length"></mat-spinner>
+
+    <mat-selection-list #forms [multiple]="false">
+        <mat-list-option 
+            *ngFor="let form of formularios" 
+            [value]="form.nU_IDFORMULARIO_FORM"
+            (click)="selectFormulario(form.nU_IDFORMULARIO_FORM)"
+        >
+            {{form.nU_IDFORMULARIO_FORM}} -- {{form.tX_NOMBREFORMULARIO_FORM}}
+        </mat-list-option>
+    </mat-selection-list>
+      
+</div>
+
+<div mat-dialog-actions>
+    <button mat-button mat-dialog-close>Cerrar</button>
+</div>

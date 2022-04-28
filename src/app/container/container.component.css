@@ -1,0 +1,6 @@
+.container-hc {
+    height: calc(100% - 60px);
+    width: 100%;
+    margin-top: 60px;
+    position: absolute;
+}

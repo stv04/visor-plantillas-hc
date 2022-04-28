@@ -1,0 +1,33 @@
+.content-list .item-list {
+    position: static;
+    width: 100%;
+    height: auto;
+    margin-bottom: 5px;
+    padding: 5px;
+    background-color: rgba(255, 255, 255, 0.10);
+    border: 1px solid rgba(255, 255, 255, 0.15);
+    border-radius: 4px;
+    -webkit-transition: background-color 0.2s ease-in;
+    -o-transition: background-color 0.2s ease-in;
+    transition: background-color 0.2s ease-in;
+}
+
+.box-search {
+    padding: 3px 4px;
+    background-color: rgba(0, 208, 247, 0.30);
+    border-radius: 4px;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-around;
+    align-items: center;
+}
+
+label {
+    color: white;
+}
+
+mat-form-field {
+    color:white;
+    width: 100%;
+}
+

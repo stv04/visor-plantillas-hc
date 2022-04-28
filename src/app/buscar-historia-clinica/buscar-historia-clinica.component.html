@@ -1,0 +1,65 @@
+<div class="form-m-criterios d-none">
+    <h4>Búsqueda</h4>
+    
+    <div class="row">
+        <div class="col-sm-6">
+            <div class="checkbox white">
+                <label>
+                    <input id="EsNumRegistro" name="EsNumRegistro" type="checkbox" value="true"><span class="checkbox-material"><span class="check"></span></span><input name="EsNumRegistro" type="hidden" value="false"> Registro admisión
+                </label>
+            </div>
+        </div>
+        <div class="col-sm-6">
+            <div class="form-group white">
+                <mat-form-field>
+                    <input matInput type="text" name="NumeroRegistro" value="0">
+                </mat-form-field>
+                
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-sm-12">
+            <div class="checkbox white">
+                <label>
+                    <input id="EsFechaEspecifica" name="EsFechaEspecifica" type="checkbox" value="true"><span class="checkbox-material"><span class="check"></span></span><input name="EsFechaEspecifica" type="hidden" value="false"> Por rango de fechas
+                </label>
+
+                <div *ngIf="filtrarFecha">
+                    <mat-form-field>
+                        <mat-label>Fecha inicial</mat-label>
+                        <input matInput type="date" name="FechaInicial">
+                    </mat-form-field>
+                    <mat-form-field>
+                        <mat-label>Fecha final</mat-label>
+                        <input matInput type="date" name="fechaFinal">
+                    </mat-form-field>
+
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-sm-12">
+            <button mat-raised-button color="primary" id="btnBusqueda" type="button" class="btn btn-block">Buscar<div class="ripple-container"><div class="ripple ripple-on ripple-out" style="left: 139.5px; top: -11.1875px; background-color: rgba(255, 255, 255, 0.84); transform: scale(2.625);"></div><div class="ripple ripple-on ripple-out" style="left: 177.5px; top: -15.1875px; background-color: rgba(255, 255, 255, 0.84); transform: scale(2.625);"></div><div class="ripple ripple-on ripple-out" style="left: 122.5px; top: -6.1875px; background-color: rgba(255, 255, 255, 0.84); transform: scale(2.625);"></div></div></button>
+        </div>
+    </div>
+    
+</div>
+<div class="box-dark content-m-criterios">
+    <div class="tab-content criterios-list">
+        <div id="menu2" role="tabpanel" class="tab-pane active in">
+            <div id="pendientes-content" class="content-list">
+                <div class="item-list">
+                    <div class="box-search">
+                        formato
+                        <span>{{title}}</span>
+                        <button mat-button (click)="openDialog()">
+                            <mat-icon>search</mat-icon>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

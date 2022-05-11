@@ -4,3 +4,26 @@
 
 <app-container></app-container>
 <app-drop-perfil></app-drop-perfil>
+<app-menu-flotante></app-menu-flotante>
+
+<script>
+    function asociar(arr) {
+        const res = new Array();
+        let i = 0;
+        let iter = 0;
+
+        arr.forEach(v => {
+            if(iter === 0) {
+                res[i] = {id: v.replace(/\"|value=/g, "")}
+                iter++
+            } else {
+                res[i].value = v.replace(/>|</g, "");
+                iter = 0;
+                i++
+            }
+
+        });
+
+        return res
+    }
+</script>

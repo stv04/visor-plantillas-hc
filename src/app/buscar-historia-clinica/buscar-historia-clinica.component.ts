@@ -24,4 +24,8 @@ export class BuscarHistoriaClinicaComponent implements OnInit {
     this.dialog.open(MPlantillasHcComponent);
   }
 
+  get afil() {
+    return Object.entries(this.afilServ.afiliado).length;
+  }
+
 }

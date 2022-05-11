@@ -1,6 +1,7 @@
 /* You can add global styles to this file, and also import other style files */
-@import "./assets/css/deeppurple-amber.css";
+/* @import "./assets/css/deeppurple-amber.css"; */
 /* @import "./example.css"; */
+/* @import "./example.scss"; */
 
 * {
     -webkit-box-sizing: border-box;
@@ -40,18 +41,9 @@ body {
     vertical-align: top !important;
 }
 
-a {
+/* a {
     color: #007bff;
     text-decoration: none;
     background-color: transparent;
     -webkit-text-decoration-skip: objects;
-}
-
-/* .mat-form-field.mat-focused .mat-form-field-ripple {
-    background-color: rgba(3,169,244,.8);
-}
-
-
-.mat-form-field.mat-focused .mat-form-field-label {
-    color: rgba(3,169,244,.8);
 } */

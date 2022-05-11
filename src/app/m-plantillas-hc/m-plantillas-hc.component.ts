@@ -1,5 +1,6 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
+import { DidOpenEvent, SwalComponent } from '@sweetalert2/ngx-sweetalert2';
 import { lastValueFrom } from 'rxjs';
 import { IFormulario } from '../models/formularios';
 import { AfiliadosService } from '../services/afiliados.service';
@@ -12,8 +13,9 @@ import { FormulariosService } from '../services/formularios.service';
   styleUrls: ['./m-plantillas-hc.component.css']
 })
 export class MPlantillasHcComponent implements OnInit {
+  public cargando:boolean = true;
 
-  formularios:Array<any> = []
+  formularios:Array<any> = [];
   constructor(
     private formulariosService: FormulariosService,
     private dialog: MatDialog,
@@ -28,31 +30,22 @@ export class MPlantillasHcComponent implements OnInit {
       this.formulariosService.setMostrarios(observer);
     });
 
-    // this.dataMastServ.dataMaster("SEXO").subscribe(observer => {
-    //   console.log(observer);
-    // });
-
-    this.prueba();
-
-  }
-
-  private async prueba() {
-    // const res = await lastValueFrom(this.dataMastServ.dataMaster("SEXO"))
-
-    // console.log(res);
   }
 
   selectFormulario(id:number) {
     this.formulariosService.get(id).subscribe(observer => {
-      this.renderFormulario(observer);
       this.dialog.closeAll();
+      this.renderFormulario(observer);
     });
   }
 
   async renderFormulario(formulario: IFormulario) {
     let html = formulario.tX_HTML_FORM;
     const css = formulario.tX_CSS_FORM;
+    const id = formulario.nU_IDFORMULARIO_FORM;
     const js = formulario.tX_JS_FORM;
+    const titulo = formulario.tX_NOMBREFORMULARIO_FORM;
+
 
     const setHeader = (style:string) => `
       <head>
@@ -71,30 +64,12 @@ export class MPlantillasHcComponent implements OnInit {
     `;
 
     const domHtml = new DOMParser().parseFromString(html, "text/html");
-    // const elementosConServicios = {
-    //   [Symbol.iterator]() {
-    //     const elements = domHtml.querySelectorAll<HTMLInputElement>("input");
-    //     let i = -1;
-    //     const iter = {
-    //       next() {
-    //         i++
-    //         if(i < elements.length) {
-    //           return {value: elements[i], done: false}
-    //         } 
-
-    //         return {value: null, done: true}
-    //       }
-    //     }
-    //     return iter;
-    //   }
-    // }
     const elements = domHtml.querySelectorAll<HTMLInputElement>("[data-servicio]");
     const elementosConServicios:HTMLInputElement[] = [];
 
     elements.forEach(e => elementosConServicios.push(e));
 
     for await (const el of elementosConServicios) {
-
       if(el) await this.obtenerServicios(el);
     }
 
@@ -111,19 +86,32 @@ export class MPlantillasHcComponent implements OnInit {
       });
   
       const url = URL.createObjectURL(blob);
-      this.formulariosService.setForm(url);
+      this.formulariosService.setForm({url, titulo, id});
 
     }
   }
 
   private async obtenerServicios(el: HTMLInputElement):Promise<any> {
     const atributo = el.getAttribute("data-servicio")?.split("::");
+    interface ICampos {
+      titulo:string,
+      conversion?:string,
+    }
+
+    interface IParamsRecibidos {
+      nombre:string,
+      campos:ICampos[],
+      eval?:string,
+      separador?:string
+    }
+
+    
 
     if(atributo) {
       const [servicio, query] = atributo;
       const toParser = query.replace(/&quote;/g, "\"");
-      const params = JSON.parse(toParser);
-      const campos:any[] = params.campos;
+      const params:IParamsRecibidos = JSON.parse(toParser);
+      const campos:ICampos[] = params.campos;
       
       if(servicio === "afiliados" && this.afilServ.afiliado) {
         el.setAttribute("disabled", "true");
@@ -144,22 +132,12 @@ export class MPlantillasHcComponent implements OnInit {
           i++
         }
 
-        const value = this.evaluarValor(values.join(params.separador || ""), params.eval);
+        const value = this.evaluarValor(values.join(params.separador || ""), params.eval || "");
         // const value:string = campos.map(async c => this.afilServ.afiliado[c]).join(" ");
 
         el.setAttribute("value", value);
       }
     }
-  }
-
-  private capturarTipoIdentAfil(tipo: string):string {
-    const n:number = parseInt(tipo);
-
-    if(isNaN(n)) return tipo;
-    const visor:Array<Array<number|string>> = [[1,"CEDULA DE CIUDADANIA"],[0,"NIT"],[1,"CEDULA DE EXTRANJERIA"]];
-
-    if(!visor[n]) return tipo;
-    return visor[n][1].toString();
   }
 
   private evaluarValor(valor:string, evaluador:string): string {

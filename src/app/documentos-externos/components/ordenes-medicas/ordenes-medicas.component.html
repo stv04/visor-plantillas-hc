@@ -1,0 +1,206 @@
+<div class="container-fluid mt-3">
+    <form class="row">
+        <div class="col-md-4">
+            <mat-form-field class="m-0">
+                <mat-label>Tipo de Orden</mat-label>
+                <mat-select name="tipo_ordn" [(ngModel)]="orden.tipo_orden">
+                    <mat-option *ngFor="let opt of tipo_orden; let i = index" [value]="i">
+                        {{opt}}
+                    </mat-option>
+                </mat-select>
+            </mat-form-field>
+                  
+            <button mat-raised-button>Ordenado anteriomente</button>
+            <button mat-raised-button class="mt-2">Demanda Inducida PYP</button>
+        </div>
+        <div class="col-md-8">
+            <h4>Ordenes Médicas {{titulo}}</h4>
+            <div class="perfiles" *ngIf="orden.tipo_orden != 4">
+                <div class="row">
+                    <mat-form-field class="col-md-3">
+                        <mat-label>Procedimiento a ordenar</mat-label>
+                        <mat-select >
+                            <mat-option *ngFor="let opt of procToOrder let i = index" [value]="i">
+                                {{opt}}
+                            </mat-option>
+                        </mat-select>
+                    </mat-form-field>
+                    <mat-form-field class="col-md-7">
+                        <mat-label>Titulo</mat-label>
+                        <input matInput type="text" name="procedimiento" [(ngModel)]="orden.procedimiento">
+                    </mat-form-field>
+                    <mat-form-field class="col-md-2">
+                        <mat-label>Cantidad</mat-label>
+                        <input matInput type="number" name="cantidad" [(ngModel)]="orden.cantidad">
+                    </mat-form-field>
+                </div>
+                <div class="row">
+                    <mat-form-field class="col-md-12">
+                        <mat-label>Indicaciones / Observaciones</mat-label>
+                        <textarea matInput name="observaciones" [(ngModel)]="orden.observaciones"></textarea>
+                    </mat-form-field>
+                </div>
+                <div class="row">
+                    <div class="col-md-3" *ngIf="orden.tipo_orden == 1">
+                        <mat-form-field>
+                            <mat-label>Especialidad</mat-label>
+                            <input matInput type="text" name="especialidad" [(ngModel)]="orden.especialidad">
+                        </mat-form-field>
+                    </div>
+                    <div class="col-md text-right">
+                        <button mat-raised-button color="primary" (click)="ordenar()">Ordenar</button>
+                    </div>
+                </div>           
+            </div>
+
+            <div class="perfiles" *ngIf="orden.tipo_orden == 4">
+                <div class="row">
+                    <mat-form-field class="col-md-3">
+                        <mat-label>Medicamentos</mat-label>
+                        <mat-select name="medicamento" [(ngModel)]="medicamento.tipo_med">
+                            <mat-option [value]="i" *ngFor="let opt of tipo_med; let i = index">{{opt}}</mat-option>
+                        </mat-select>
+                    </mat-form-field>
+                    <mat-form-field class="col-md-3">
+                        <mat-label>tipo de orden</mat-label>
+                        <mat-select name="tipo_ordn" [(ngModel)]="medicamento.tipo_orden">
+                            <mat-option [value]="i" *ngFor="let opt of tipo_orden; let i = index">{{opt}}</mat-option>
+                        </mat-select>
+                    </mat-form-field>
+                    <mat-form-field class="col-md-6">
+                        <mat-label>Título</mat-label>
+                        <input matInput type="text" name="titulo" [(ngModel)]="medicamento.titulo">
+                    </mat-form-field>
+                </div>
+
+                <div class="row">
+                    <mat-form-field class="col-md-3">
+                        <mat-select name="presentacion" [(ngModel)]="medicamento.presentacion">
+                            <mat-option [value]="pres[0]" *ngFor="let pres of presentaciones">{{pres[1]}}</mat-option>
+                        </mat-select>
+                    </mat-form-field>
+                    <mat-form-field class="col-md-3">
+                        <input matInput type="text">
+                    </mat-form-field>
+                    <mat-form-field class="col-md-6">
+                        <mat-label>Concentración</mat-label>
+                        <input matInput type="text">
+                    </mat-form-field>
+                </div>
+
+                <div class="row">
+                    <h3 class="col-md-12"><b>Adminitración</b></h3>
+                    <mat-form-field class="col-md-2">
+                        <mat-label>Dosis</mat-label>
+                        <input matInput name="dosis" [(ngModel)]="medicamento.dosis">
+                    </mat-form-field>
+                    
+                    <mat-form-field class="col-md-2">
+                        <mat-label>Frecuencia</mat-label>
+                        <input matInput name="frecuencia" [(ngModel)]="medicamento.frecuencia">
+                    </mat-form-field>
+                    
+                    <mat-form-field class="col-md-2">
+                        <mat-select name="tiempo" [(ngModel)]="medicamento.tiempo">
+                            <mat-option value="1">Minutos</mat-option>
+                            <mat-option value="2">Horas</mat-option>
+                            <mat-option value="3">Días</mat-option>
+                        </mat-select>
+                    </mat-form-field>
+                    
+                    <mat-form-field class="col-md-6">
+                        <mat-label>Vía</mat-label>
+                        <mat-select name="via" [(ngModel)]="medicamento.via">
+                            <mat-option [value]="via[0]" *ngFor="let via of vias">{{via[1]}}</mat-option>
+                        </mat-select>
+                    </mat-form-field>
+                </div>
+
+                <div class="row">
+                    <mat-form-field class="col-md-3">
+                        <mat-label>Peridodo</mat-label>
+                        <input matInput type="number">
+                        <mat-icon class="icono-ayuda" matSuffix mat-icon-button matTooltip="periodo de duración del tratamiento en días"
+                        matTooltipPosition="above">help</mat-icon>
+                    </mat-form-field>
+                    <mat-form-field class="col-md-3">
+                        <mat-label>cantidad</mat-label>
+                        <input matInput type="number">
+                    </mat-form-field>
+                    <mat-form-field class="col-md-6">
+                        <mat-label>Observaciones</mat-label>
+                        <textarea matInput></textarea>
+                    </mat-form-field>
+                </div>
+                <button mat-raised-button color="primary" (click)="ordenar()">Ordenar</button>
+
+            </div>
+        </div>
+    </form>
+
+    <mat-tab-group>
+        <mat-tab label="Procedimiento/consultas">
+            <table mat-table [dataSource]="procedimientos" [style.width]="'100%'">
+                <ng-container matColumnDef="actions">
+                    <th mat-header-cell *matHeaderCellDef></th>
+                    <td mat-cell *matCellDef="let element">
+                        <button mat-icon-button><mat-icon>cancel</mat-icon></button>
+                        <button mat-icon-button><mat-icon>arrow_upward</mat-icon></button>
+                    </td>
+                </ng-container>
+
+                <ng-container matColumnDef="tipo_orden">
+                    <th mat-header-cell *matHeaderCellDef> Tipo orden </th>
+                    <td mat-cell *matCellDef="let element"> {{element.tipo_ordn}} </td>
+                </ng-container>
+                
+                <mat-text-column name="procedimiento"></mat-text-column>
+                <mat-text-column name="observaciones"></mat-text-column>
+                <mat-text-column name="cantidad"></mat-text-column>
+                
+                <ng-container matColumnDef="pyp">
+                    <th mat-header-cell *matHeaderCellDef> PyP </th>
+                    <td mat-cell *matCellDef="let element"> 
+                        <mat-checkbox color="primary"></mat-checkbox>
+                    </td>
+                </ng-container>
+                
+                <ng-container matColumnDef="noPos">
+                    <th mat-header-cell *matHeaderCellDef> No POS </th>
+                    <td mat-cell *matCellDef="let element"> 
+                        <mat-checkbox></mat-checkbox>
+                    </td>
+                </ng-container>
+                
+                <mat-text-column name="especialidad"></mat-text-column>
+                
+                <tr mat-header-row *matHeaderRowDef="colProc"></tr>
+                <tr mat-row *matRowDef="let row; columns: colProc;"></tr>
+            </table>
+        </mat-tab>
+        
+        <mat-tab label="medicamentos">
+            <table mat-table [dataSource]="medicamentos" [style.width]="'100%'">
+                <ng-container matColumnDef="actions">
+                    <th mat-header-cell *matHeaderCellDef></th>
+                    <td mat-cell *matCellDef="let element">
+                        <button mat-icon-button><mat-icon>cancel</mat-icon></button>
+                        <button mat-icon-button><mat-icon>arrow_upward</mat-icon></button>
+                    </td>
+                </ng-container>
+
+                <ng-container matColumnDef="tipo_orden">
+                    <th mat-header-cell *matHeaderCellDef> Tipo orden </th>
+                    <td mat-cell *matCellDef="let element"> {{element.tipo_orden}} </td>
+                </ng-container>
+                
+                <mat-text-column name="medicamentos"></mat-text-column>
+                <mat-text-column name="observacion"></mat-text-column>
+                <mat-text-column name="cantidad"></mat-text-column>
+                
+                <tr mat-header-row *matHeaderRowDef="colMed"></tr>
+                <tr mat-row *matRowDef="let row; columns: colMed;"></tr>
+            </table>
+        </mat-tab>
+    </mat-tab-group>
+</div>

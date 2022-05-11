@@ -13,9 +13,9 @@ export class DropPerfilComponent implements OnInit {
   }
 
   @HostListener("document:click", ["$event"])
-  hide(event:Event) {
-    if(!this.eRef.nativeElement.contains(event.target)) { this.open = ""; }
-
+  x(e:any) {
+    if(!this.eRef.nativeElement.contains(e.target)) {
+      this.open = "";
+    }
   }
-
 }

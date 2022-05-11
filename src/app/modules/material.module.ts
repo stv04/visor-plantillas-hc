@@ -13,6 +13,11 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatOptionModule } from '@angular/material/core';
 import { MatSelectModule } from "@angular/material/select";
 import {MatTooltipModule} from '@angular/material/tooltip';
+import { MatProgressBarModule } from "@angular/material/progress-bar";
+import {MatTabsModule} from "@angular/material/tabs";
+import {MatTableModule} from '@angular/material/table';
+import {MatCheckboxModule} from "@angular/material/checkbox";
+import {MatRadioModule} from '@angular/material/radio';
 
 @NgModule({
   declarations: [],
@@ -30,7 +35,12 @@ import {MatTooltipModule} from '@angular/material/tooltip';
     MatFormFieldModule,
     MatOptionModule,
     MatSelectModule,
-    MatTooltipModule
+    MatTooltipModule,
+    MatProgressBarModule,
+    MatTabsModule,
+    MatTableModule,
+    MatCheckboxModule,
+    MatRadioModule
   ]
 })
 export class MaterialModule { }

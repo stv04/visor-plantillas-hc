@@ -10,6 +10,22 @@
     transition: all .5s ease-out;
 }
 
+#iframe-visor {
+    resize: vertical;
+}
+
 .visor-hc.sidebar-open {
     margin-left: 360px;
+}
+
+.mat-tab-group {
+    height: 100%;
+}
+
+.mat-tab {
+    height: 100%;
+}
+
+.mat-tab-body-wrapper {
+    height: 100%;
 }

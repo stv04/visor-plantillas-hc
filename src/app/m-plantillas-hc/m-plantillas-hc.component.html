@@ -1,6 +1,8 @@
 <h1 mat-dialog-title>formularios</h1>
+
+
 <div mat-dialog-content>
-    <mat-spinner *ngIf="!formularios.length"></mat-spinner>
+    <mat-spinner *ngIf="!formularios.length" class="text-center"></mat-spinner>
 
     <mat-selection-list #forms [multiple]="false">
         <mat-list-option 

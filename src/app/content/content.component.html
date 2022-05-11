@@ -1,7 +1,47 @@
 <div class="main-panel">
     <div class="visor-hc {{sidebarOpen ? 'sidebar-open' : ''}}">
         <mat-card style="height: 100%;">
-            <iframe id="iframe-visor" height="100%" width="100%" frameborder="0"></iframe>
+
+            <div class="botones d-flex position-absolute" style="right: 0;">
+                <button mat-button (click)="guardarHistoriaClinica()">
+                    <mat-icon>save</mat-icon>
+                </button>
+            </div>
+            <mat-tab-group>
+                
+                <mat-tab label="Consentimiento informados">
+                    <app-consentimientos-informados></app-consentimientos-informados>
+                </mat-tab>
+                
+                
+                <mat-tab label="Formato atención" bodyClass="mat-tab">
+                    <iframe id="iframe-visor" width="100%" frameborder="1"></iframe>
+                    <!-- <mat-card-title>{{title}}</mat-card-title> -->
+                    
+                </mat-tab>
+                
+                <mat-tab label="Ordenes médicas" *ngIf="false">
+                    <app-ordenes-medicas></app-ordenes-medicas>
+                </mat-tab>
+
+                <mat-tab label="Indicaciones de manejo" *ngIf="false">
+                    <div>
+                        <div [ngxSummernote]="config"></div>
+                    </div>
+                </mat-tab>
+
+                <mat-tab label="Incapacidades" *ngIf="false">
+                    <app-incapacidades></app-incapacidades>
+                </mat-tab>
+
+                <!-- REvisión de documentos externos -->
+                <mat-tab label="Primer documento" *ngIf="revisarDocumentoAsociado(1)">primer documento</mat-tab>
+                <mat-tab label="Segundo documento" *ngIf="revisarDocumentoAsociado(2)">Segundo documento</mat-tab>
+
+            </mat-tab-group>
+            <mat-card-footer>
+                <mat-progress-bar *ngIf="cargando" mode='indeterminate'></mat-progress-bar>
+            </mat-card-footer>
         </mat-card>
     </div>
 </div>

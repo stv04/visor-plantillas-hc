@@ -4,3 +4,52 @@
     border: 2px solid #e1e1e1;
     background-color: #f8f8f8;
 }
+
+/* input especial para los formatos */
+
+.inp_conc-cont {
+    position: relative;
+    width: 200px;
+    display: inline-block;
+}
+
+.inp_conc {
+    border: none;
+    border-bottom: 1px solid lightgray;
+    background: transparent;
+    outline: none;
+    transition: all ease-in 200ms;
+    width: 100%;
+}
+
+.nom {
+    width: 360px;
+}
+
+.inp_conc-cont::after {
+    width: 100%;
+    content: "";
+    background-color: var(--primary);
+    height: 2px;
+    position: absolute;
+    left: 0;
+    bottom: 0;
+    transition: all ease-in 200ms;
+    transform: scale(0);
+}
+
+.inp_conc-cont:focus-within::after  {
+    transform: scale(1);
+}
+
+.firma {
+    height: 130px;
+    border-bottom: 1.5px solid black;
+}
+
+.espacio-cedula {
+    width: 130px;
+    border-bottom: 1px solid black;
+    display: inline-block;
+    margin-top: 1.5em;
+}

@@ -8,8 +8,9 @@ import { Component, OnInit } from '@angular/core';
 export class ConsentimientosInformadosComponent implements OnInit {
 
   public consentimiento = {
-    tipo_consentimiento: 339
+    tipo_consentimiento: 342
   }
+
   public readonly consentimientos:any[] = [
     {
       id: 339,
@@ -53,6 +54,8 @@ export class ConsentimientosInformadosComponent implements OnInit {
     }
   ];
 
+  public consentimientosSeleccionados:any[] = [];
+
   constructor() { }
 
   ngOnInit(): void {
@@ -60,6 +63,24 @@ export class ConsentimientosInformadosComponent implements OnInit {
 
   consentimientoSeleccionado(id: number):boolean {
     return this.consentimiento.tipo_consentimiento === id;
+  }
+
+  autorizar():void {
+    const con:number = this.consentimiento.tipo_consentimiento;
+    const seleccionado:any = this.consentimientos.find(c => c.id === con);
+    const exist = this.consentimientosSeleccionados.some(s => s.id === seleccionado.id);
+
+    if(exist) return;
+    this.consentimientosSeleccionados.push(seleccionado);
+  }
+
+  quitarConsentimiento( id:number ) {
+    const index:number = this.consentimientosSeleccionados.findIndex((cons:any) => cons.id === id);
+    console.log(index);
+    if(index === -1) return;
+
+
+    this.consentimientosSeleccionados.splice(index, 1);
   }
 
 }

@@ -9,29 +9,28 @@
             </div>
             <mat-tab-group>
                 
-                <mat-tab label="Consentimiento informados">
-                    <app-consentimientos-informados></app-consentimientos-informados>
-                </mat-tab>
-                
-                
                 <mat-tab label="Formato atención" bodyClass="mat-tab">
                     <iframe id="iframe-visor" width="100%" frameborder="1"></iframe>
                     <!-- <mat-card-title>{{title}}</mat-card-title> -->
                     
                 </mat-tab>
                 
-                <mat-tab label="Ordenes médicas" *ngIf="false">
+                <mat-tab label="Ordenes médicas" *ngIf="true">
                     <app-ordenes-medicas></app-ordenes-medicas>
                 </mat-tab>
 
-                <mat-tab label="Indicaciones de manejo" *ngIf="false">
+                <mat-tab label="Indicaciones de manejo" *ngIf="true">
                     <div>
                         <div [ngxSummernote]="config"></div>
                     </div>
                 </mat-tab>
 
-                <mat-tab label="Incapacidades" *ngIf="false">
+                <mat-tab label="Incapacidades" *ngIf="true">
                     <app-incapacidades></app-incapacidades>
+                </mat-tab>
+
+                <mat-tab label="Consentimiento informados">
+                    <app-consentimientos-informados></app-consentimientos-informados>
                 </mat-tab>
 
                 <!-- REvisión de documentos externos -->

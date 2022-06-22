@@ -2,7 +2,7 @@ import { Component, OnInit, ViewChild } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { DidOpenEvent, SwalComponent } from '@sweetalert2/ngx-sweetalert2';
 import { lastValueFrom } from 'rxjs';
-import { IFormulario } from '../models/formularios';
+import { IFormulario } from '../interfaces/formularios';
 import { AfiliadosService } from '../services/afiliados.service';
 import { DataMasterService } from '../services/data-master.service';
 import { FormulariosService } from '../services/formularios.service';

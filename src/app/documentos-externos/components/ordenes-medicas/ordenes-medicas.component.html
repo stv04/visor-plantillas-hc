@@ -3,23 +3,25 @@
         <div class="col-md-4">
             <mat-form-field class="m-0">
                 <mat-label>Tipo de Orden</mat-label>
-                <mat-select name="tipo_ordn" [(ngModel)]="orden.tipo_orden">
-                    <mat-option *ngFor="let opt of tipo_orden; let i = index" [value]="i">
+                <mat-select name="tipo_ordn" [(ngModel)]="tipo_orden">
+                    <mat-option *ngFor="let opt of tipo_ordenes; let i = index" [value]="i">
                         {{opt}}
                     </mat-option>
                 </mat-select>
             </mat-form-field>
                   
-            <button mat-raised-button>Ordenado anteriomente</button>
+            <button mat-raised-button (click)="historialDocumentos()">Ordenado anteriomente</button>
             <button mat-raised-button class="mt-2">Demanda Inducida PYP</button>
         </div>
         <div class="col-md-8">
             <h4>Ordenes Médicas {{titulo}}</h4>
-            <div class="perfiles" *ngIf="orden.tipo_orden != 4">
+
+            <!-- Para el caso en que la orden sea diferente a medicamentos y optometría -->
+            <div class="perfiles" *ngIf="tipo_orden < 4" [formGroup]="procedimiento">
                 <div class="row">
                     <mat-form-field class="col-md-3">
                         <mat-label>Procedimiento a ordenar</mat-label>
-                        <mat-select >
+                        <mat-select required name="procToOrder" id="procToOrder" #proc>
                             <mat-option *ngFor="let opt of procToOrder let i = index" [value]="i">
                                 {{opt}}
                             </mat-option>
@@ -27,24 +29,24 @@
                     </mat-form-field>
                     <mat-form-field class="col-md-7">
                         <mat-label>Titulo</mat-label>
-                        <input matInput type="text" name="procedimiento" [(ngModel)]="orden.procedimiento">
+                        <input matInput type="text" name="procedimiento" formControlName="procedimiento">
                     </mat-form-field>
                     <mat-form-field class="col-md-2">
                         <mat-label>Cantidad</mat-label>
-                        <input matInput type="number" name="cantidad" [(ngModel)]="orden.cantidad">
+                        <input matInput type="number" name="cantidad" formControlName="cantidad">
                     </mat-form-field>
                 </div>
                 <div class="row">
                     <mat-form-field class="col-md-12">
                         <mat-label>Indicaciones / Observaciones</mat-label>
-                        <textarea matInput name="observaciones" [(ngModel)]="orden.observaciones"></textarea>
+                        <textarea matInput name="observaciones" formControlName="observaciones"></textarea>
                     </mat-form-field>
                 </div>
                 <div class="row">
-                    <div class="col-md-3" *ngIf="orden.tipo_orden == 1">
+                    <div class="col-md-3" *ngIf="tipo_orden == 1">
                         <mat-form-field>
                             <mat-label>Especialidad</mat-label>
-                            <input matInput type="text" name="especialidad" [(ngModel)]="orden.especialidad">
+                            <input matInput type="text" name="especialidad" formControlName="especialidad">
                         </mat-form-field>
                     </div>
                     <div class="col-md text-right">
@@ -53,38 +55,42 @@
                 </div>           
             </div>
 
-            <div class="perfiles" *ngIf="orden.tipo_orden == 4">
+            <!-- Orden de tipo medicamentos -->
+            <div class="perfiles" [formGroup]="medicamento" *ngIf="tipo_orden == 4">
                 <div class="row">
                     <mat-form-field class="col-md-3">
                         <mat-label>Medicamentos</mat-label>
-                        <mat-select name="medicamento" [(ngModel)]="medicamento.tipo_med">
-                            <mat-option [value]="i" *ngFor="let opt of tipo_med; let i = index">{{opt}}</mat-option>
+                        <mat-select name="medicamento" formControlName="tipo_med">
+                            <mat-option [value]="i" *ngFor="let opt of tipos_med; let i = index">{{opt}}</mat-option>
                         </mat-select>
                     </mat-form-field>
                     <mat-form-field class="col-md-3">
-                        <mat-label>tipo de orden</mat-label>
-                        <mat-select name="tipo_ordn" [(ngModel)]="medicamento.tipo_orden">
-                            <mat-option [value]="i" *ngFor="let opt of tipo_orden; let i = index">{{opt}}</mat-option>
+                        <mat-label>Procedimiento</mat-label>
+                        <mat-select formControlName="procedimiento">
+                            <mat-option *ngFor="let opt of procToOrder let i = index" [value]="i">
+                                {{opt}}
+                            </mat-option>
                         </mat-select>
                     </mat-form-field>
                     <mat-form-field class="col-md-6">
                         <mat-label>Título</mat-label>
-                        <input matInput type="text" name="titulo" [(ngModel)]="medicamento.titulo">
+                        <input matInput type="text" name="titulo" formControlName="medicamento">
                     </mat-form-field>
                 </div>
 
                 <div class="row">
                     <mat-form-field class="col-md-3">
-                        <mat-select name="presentacion" [(ngModel)]="medicamento.presentacion">
+                        <mat-label>Presentación</mat-label>
+                        <mat-select name="presentacion" formControlName="presentacion">
                             <mat-option [value]="pres[0]" *ngFor="let pres of presentaciones">{{pres[1]}}</mat-option>
                         </mat-select>
                     </mat-form-field>
                     <mat-form-field class="col-md-3">
-                        <input matInput type="text">
+                        <input matInput type="text" formControlName="presentacion">
                     </mat-form-field>
                     <mat-form-field class="col-md-6">
                         <mat-label>Concentración</mat-label>
-                        <input matInput type="text">
+                        <input matInput type="text" formControlName="concentracion">
                     </mat-form-field>
                 </div>
 
@@ -92,16 +98,16 @@
                     <h3 class="col-md-12"><b>Adminitración</b></h3>
                     <mat-form-field class="col-md-2">
                         <mat-label>Dosis</mat-label>
-                        <input matInput name="dosis" [(ngModel)]="medicamento.dosis">
+                        <input matInput name="dosis" formControlName="dosis">
                     </mat-form-field>
                     
                     <mat-form-field class="col-md-2">
                         <mat-label>Frecuencia</mat-label>
-                        <input matInput name="frecuencia" [(ngModel)]="medicamento.frecuencia">
+                        <input matInput name="frecuencia" formControlName="frecuencia">
                     </mat-form-field>
                     
                     <mat-form-field class="col-md-2">
-                        <mat-select name="tiempo" [(ngModel)]="medicamento.tiempo">
+                        <mat-select name="tiempo" formControlName="tiempo">
                             <mat-option value="1">Minutos</mat-option>
                             <mat-option value="2">Horas</mat-option>
                             <mat-option value="3">Días</mat-option>
@@ -110,7 +116,7 @@
                     
                     <mat-form-field class="col-md-6">
                         <mat-label>Vía</mat-label>
-                        <mat-select name="via" [(ngModel)]="medicamento.via">
+                        <mat-select name="via" formControlName="via">
                             <mat-option [value]="via[0]" *ngFor="let via of vias">{{via[1]}}</mat-option>
                         </mat-select>
                     </mat-form-field>
@@ -125,33 +131,244 @@
                     </mat-form-field>
                     <mat-form-field class="col-md-3">
                         <mat-label>cantidad</mat-label>
-                        <input matInput type="number">
+                        <input matInput type="number" formControlName="cantidad">
                     </mat-form-field>
                     <mat-form-field class="col-md-6">
                         <mat-label>Observaciones</mat-label>
-                        <textarea matInput></textarea>
+                        <textarea matInput formControlName="observaciones"></textarea>
                     </mat-form-field>
                 </div>
                 <button mat-raised-button color="primary" (click)="ordenar()">Ordenar</button>
 
             </div>
+
+            <!-- Orden de tipo optometría -->
+            <div class="perfiles" *ngIf="tipo_orden == 5">
+                <div class="row">
+                    <h4 class="col-2 align-bottom">Distancia al vértice</h4>
+                    <div class="col-5 d-flex flex-row align-items-end">
+                        <mat-form-field style="width: 60%;">
+                            <mat-label>OD:</mat-label>
+                            <input matInput type="number">
+                        </mat-form-field>
+
+                        <h4 class="ml-1">Milimetros</h4>
+                    </div>
+                    <div class="col-5 d-flex flex-row align-items-end">
+                        <mat-form-field style="width: 60%;">
+                            <mat-label>OI:</mat-label>
+                            <input matInput type="number">
+                        </mat-form-field>
+
+                        <h4 class="ml-1">Milimetros</h4>
+                    </div>
+                </div>
+
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th></th>
+                            <th>Esfera</th>
+                            <th>Cilindro</th>
+                            <th>Eje</th>
+                            <th>Agudeza visual</th>
+                        </tr>
+                    </thead>
+
+                    <tbody>
+                        <tr class="table-bordered">
+                            <td>Ojo Derecho (LEJOS)</td>
+                            <td>
+                                <mat-form-field style="width: 80px">
+                                    <input matInput type="number">
+                                </mat-form-field>
+                            </td>
+                            <td>
+                                <mat-form-field style="width: 80px">
+                                    <input matInput type="number">
+                                </mat-form-field>
+                            </td>
+                            <td>
+                                <mat-form-field style="width: 80px">
+                                    <input matInput type="number">
+                                </mat-form-field>
+                            </td>
+                            <td>
+                                <div class="d-flex flex-row align-items-baseline">
+                                    <span>20/</span>
+                                    <mat-form-field style="width: 80px">
+                                        <input matInput type="number">
+                                    </mat-form-field>
+                                </div>
+                            </td>
+                        </tr>
+                        <tr class="table-bordered">
+                            <td>Ojo Izquierdo (LEJOS)</td>
+                            <td>
+                                <mat-form-field style="width: 80px">
+                                    <input matInput type="number">
+                                </mat-form-field>
+                            </td>
+                            <td>
+                                <mat-form-field style="width: 80px">
+                                    <input matInput type="number">
+                                </mat-form-field>
+                            </td>
+                            <td>
+                                <mat-form-field style="width: 80px">
+                                    <input matInput type="number">
+                                </mat-form-field>
+                            </td>
+                            <td>
+                                <div class="d-flex flex-row align-items-baseline">
+                                    <span>20/</span>
+                                    <mat-form-field style="width: 80px">
+                                        <input matInput type="number">
+                                    </mat-form-field>
+                                </div>
+                            </td>
+                        </tr>
+                        <tr class="table-bordered">
+                            <td>Ojo Derecho (CERCA)</td>
+                            <td>
+                                <mat-form-field style="width: 80px">
+                                    <input matInput type="number">
+                                </mat-form-field>
+                            </td>
+                            <td>
+                                <mat-form-field style="width: 80px">
+                                    <input matInput type="number">
+                                </mat-form-field>
+                            </td>
+                            <td>
+                                <mat-form-field style="width: 80px">
+                                    <input matInput type="number">
+                                </mat-form-field>
+                            </td>
+                            <td>
+                                <div class="d-flex flex-row align-items-baseline">
+                                    <span>20/</span>
+                                    <mat-form-field style="width: 80px">
+                                        <input matInput type="number">
+                                    </mat-form-field>
+                                </div>
+                            </td>
+                        </tr>
+                        <tr class="table-bordered">
+                            <td>Ojo Izquierdo (CERCA)</td>
+                            <td>
+                                <mat-form-field style="width: 80px">
+                                    <input matInput type="number">
+                                </mat-form-field>
+                            </td>
+                            <td>
+                                <mat-form-field style="width: 80px">
+                                    <input matInput type="number">
+                                </mat-form-field>
+                            </td>
+                            <td>
+                                <mat-form-field style="width: 80px">
+                                    <input matInput type="number">
+                                </mat-form-field>
+                            </td>
+                            <td>
+                                <div class="d-flex flex-row align-items-baseline">
+                                    <span>20/</span>
+                                    <mat-form-field style="width: 80px">
+                                        <input matInput type="number">
+                                    </mat-form-field>
+                                </div>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+
+                <div class="row">
+                    <h4 class="col-4"><b>Adición</b></h4>
+                    <mat-form-field class="col-4">
+                        <mat-label>Ojo Derecho:</mat-label>
+                        <input matInput type="number">
+                    </mat-form-field>
+
+                    <mat-form-field class="col-4">
+                        <mat-label>Ojo Izquierdo:</mat-label>
+                        <input matInput type="number">
+                    </mat-form-field>
+                </div>
+
+                <div class="row">
+                    <h4 class="col-4"><b>Distancia Nasopupilar</b></h4>
+                    <mat-form-field class="col-4">
+                        <mat-label>Ojo Derecho:</mat-label>
+                        <input matInput type="number">
+                    </mat-form-field>
+                    <mat-form-field class="col-4">
+                        <mat-label>Ojo Izquierdo:</mat-label>
+                        <input matInput type="number">
+                    </mat-form-field>
+                </div>
+
+                <div class="row">
+                    <mat-form-field class="col-3">
+                        <mat-label>Uso</mat-label>
+                        <input matInput type="text">
+                    </mat-form-field>
+                    <mat-form-field class="col-3">
+                        <mat-label>material</mat-label>
+                        <input matInput type="text">
+                    </mat-form-field>
+                    <mat-form-field class="col-3">
+                        <mat-label>Tipo de lentes</mat-label>
+                        <mat-select>
+                            <mat-option [value]="tipo.id" *ngFor="let tipo of tipos_lente">{{ tipo.value }}</mat-option>
+                        </mat-select>
+                    </mat-form-field>
+                    <mat-form-field class="col-3">
+                        <mat-label>Color filtro</mat-label>
+                        <input matInput type="text">
+                    </mat-form-field>
+                </div>
+
+                <div class="row">
+                    <h4 class="col-4"><b>Altura</b></h4>
+                    <mat-form-field class="col-4">
+                        <mat-label>Ojo Derecho:</mat-label>
+                        <input matInput type="number">
+                    </mat-form-field>
+                    <mat-form-field class="col-4">
+                        <mat-label>Ojo Izquierdo:</mat-label>
+                        <input matInput type="number">
+                    </mat-form-field>
+                </div>
+
+                <div class="row">
+                    <mat-form-field class="col-12">
+                        <mat-label>Observaciones</mat-label>
+                        <textarea matInput name="" id=""></textarea>
+                    </mat-form-field>
+                </div>
+
+                <div class="text-right">
+                    <button mat-raised-button color="primary" (click)="ordenar()">ORDENAR</button>
+                </div>
+            </div>
         </div>
     </form>
 
-    <mat-tab-group>
+    <mat-tab-group [selectedIndex]="orden_seleccionada">
         <mat-tab label="Procedimiento/consultas">
             <table mat-table [dataSource]="procedimientos" [style.width]="'100%'">
                 <ng-container matColumnDef="actions">
                     <th mat-header-cell *matHeaderCellDef></th>
                     <td mat-cell *matCellDef="let element">
                         <button mat-icon-button><mat-icon>cancel</mat-icon></button>
-                        <button mat-icon-button><mat-icon>arrow_upward</mat-icon></button>
+                        <button mat-icon-button (click)="editarOrden(element)"><mat-icon>arrow_upward</mat-icon></button>
                     </td>
                 </ng-container>
 
                 <ng-container matColumnDef="tipo_orden">
                     <th mat-header-cell *matHeaderCellDef> Tipo orden </th>
-                    <td mat-cell *matCellDef="let element"> {{element.tipo_ordn}} </td>
+                    <td mat-cell *matCellDef="let element"> {{obtenerTipoOrden(element.tipo_orden)}} </td>
                 </ng-container>
                 
                 <mat-text-column name="procedimiento"></mat-text-column>
@@ -191,16 +408,44 @@
 
                 <ng-container matColumnDef="tipo_orden">
                     <th mat-header-cell *matHeaderCellDef> Tipo orden </th>
-                    <td mat-cell *matCellDef="let element"> {{element.tipo_orden}} </td>
+                    <td mat-cell *matCellDef="let element"> {{obtenerTipoOrden(element.tipo_orden)}} </td>
                 </ng-container>
                 
-                <mat-text-column name="medicamentos"></mat-text-column>
-                <mat-text-column name="observacion"></mat-text-column>
+                <mat-text-column name="medicamento"></mat-text-column>
+                <mat-text-column name="observaciones"></mat-text-column>
                 <mat-text-column name="cantidad"></mat-text-column>
                 
                 <tr mat-header-row *matHeaderRowDef="colMed"></tr>
                 <tr mat-row *matRowDef="let row; columns: colMed;"></tr>
             </table>
         </mat-tab>
+
+        <mat-tab label="Optometría">
+            <table mat-table [dataSource]="optometrias" [style.width]="'100%'">
+                <ng-container matColumnDef="actions">
+                    <th mat-header-cell *matHeaderCellDef></th>
+                    <td mat-cell *matCellDef="let element">
+                        <button mat-icon-button><mat-icon>cancel</mat-icon></button>
+                        <button mat-icon-button><mat-icon>arrow_upward</mat-icon></button>
+                    </td>
+                </ng-container>
+
+                <ng-container matColumnDef="tipo_orden">
+                    <th mat-header-cell *matHeaderCellDef> Tipo orden </th>
+                    <td mat-cell *matCellDef="let element"> Fórmula de anteojos </td>
+                </ng-container>
+
+                <tr mat-header-row *matHeaderRowDef="colOpt"></tr>
+                <tr mat-row *matRowDef="let row; columns: colOpt;"></tr>
+            </table>
+        </mat-tab>
     </mat-tab-group>
 </div>
+
+<swal
+  #warnSwal
+  title="Fómula ordenada"
+  text="Ya existe una fórmula de optometría ordenada"
+  icon="warning"
+  >
+</swal>

@@ -7,10 +7,62 @@
                     <mat-icon>save</mat-icon>
                 </button>
             </div>
-            <mat-tab-group>
+            <ul class="nav nav-tabs mb-3" id="formatos-tab" role="tablist" style="height: 38px;">
+                <li class="nav-item" role="presentation">
+                  <a class="nav-link active" id="formatos-atencion-tab" data-toggle="pill" href="#formatos-atencion" role="tab" aria-controls="formatos-atencion" aria-selected="true">Formato de atención</a>
+                </li>
+
+                <!-- Tab órdenes médicas -->
+                <li class="nav-item" role="presentation">
+                  <a class="nav-link" id="formatos-ordMed-tab" data-toggle="pill" href="#formatos-ordMed" role="tab" aria-controls="formatos-ordMed">Órdenes médicas</a>
+                </li>
+
+                <!-- Tab indicaciones de manejo -->
+                <li class="nav-item" role="presentation">
+                  <a class="nav-link" id="formatos-indManejo-tab" data-toggle="pill" href="#formatos-indManejo" role="tab" aria-controls="formatos-indManejo">Indicaciones de manejo</a>
+                </li>
+
+                <!-- Tab incapacidades -->
+                <li class="nav-item" role="presentation">
+                  <a class="nav-link" id="formatos-incapacidades-tab" data-toggle="pill" href="#formatos-incapacidades" role="tab" aria-controls="formatos-incapacidades">Incapacidades</a>
+                </li>
+
+                <!-- Tab consentimientos informados -->
+                <li class="nav-item" role="presentation">
+                  <a class="nav-link" id="formatos-consInf-tab" data-toggle="pill" href="#formatos-consInf" role="tab" aria-controls="formatos-consInf">Consentimientos informados</a>
+                </li>
+            </ul>
+
+            <div class="tab-content" id="formatos-tabContent" style="height: calc(100% - 54px)">
+                <div class="tab-pane fade show active h-100" id="formatos-atencion" role="tabpanel" aria-labelledby="formatos-atencion-tab">
+                    <iframe id="iframe-visor" width="100%" height="100%" frameborder="1" #editor></iframe>
+                </div>
+
+                <!-- Ordenes médicas -->
+                <div class="tab-pane fade h-100 overflow-auto" id="formatos-ordMed" role="tabpanel" aria-labelledby="formatos-ordMed-tab">
+                    <app-ordenes-medicas></app-ordenes-medicas>
+                </div>
                 
-                <mat-tab label="Formato atención" bodyClass="mat-tab">
-                    <iframe id="iframe-visor" width="100%" frameborder="1"></iframe>
+                <!-- Indicaciones de manejo -->
+                <div class="tab-pane fade h-100 overflow-auto" id="formatos-indManejo" role="tabpanel" aria-labelledby="formatos-indManejo-tab">
+                    <div [ngxSummernote]="config" id="editor-indManejo"></div>
+                </div>
+                
+                <!-- Incapacidades -->
+                <div class="tab-pane fade h-100 overflow-auto" id="formatos-incapacidades" role="tabpanel" aria-labelledby="formatos-incapacidades-tab">
+                    <app-incapacidades></app-incapacidades>
+                </div>
+                
+                <!-- Consentimientos informados -->
+                <div class="tab-pane fade h-100 overflow-auto" id="formatos-consInf" role="tabpanel" aria-labelledby="formatos-consInf-tab">
+                    <app-consentimientos-informados></app-consentimientos-informados>
+                </div>
+            </div>
+              
+            <mat-tab-group *ngIf="false">
+                
+                <mat-tab label="Formato atención" bodyClass="mat-tab" *ngIf="true">
+                    <!-- <iframe id="iframe-visor" width="100%" frameborder="1" #editor></iframe> -->
                     <!-- <mat-card-title>{{title}}</mat-card-title> -->
                     
                 </mat-tab>
@@ -41,6 +93,8 @@
             <mat-card-footer>
                 <mat-progress-bar *ngIf="cargando" mode='indeterminate'></mat-progress-bar>
             </mat-card-footer>
+            
         </mat-card>
     </div>
 </div>
+

@@ -1,7 +1,8 @@
 import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { BehaviorSubject, Observable } from 'rxjs';
-import { IFormulario, IHistoriaClinica, IMostradorFormulario } from '../models/formularios';
+import { IFormulario, IHistoriaClinica, IMostradorFormulario } from '../interfaces/formularios';
+import { IHistClinPorDocExt } from '../interfaces/historiaClinica';
 import {AfiliadosService} from "./afiliados.service";
 
 @Injectable({
@@ -13,6 +14,9 @@ export class FormulariosService {
   private pathForm:string = "Formularios";
   private pathHistClin:string = "HistoriaClinica";
   private pathDocXForm:string = this.pathForm + "/relacionDocumento";
+  private headAppJson = new HttpHeaders({
+    "Content-Type": "application/json"
+  });
 
   private seleccionado = new BehaviorSubject({});
   private mostrarioForms:Array<IMostradorFormulario> = [];
@@ -43,14 +47,13 @@ export class FormulariosService {
 
 
   //LLENADO DE HISTORIA CLÍNICA
-  enviarHistoriaClinica(historia:IHistoriaClinica):Observable<string> {
+  enviarHistoriaClinica(historia:IHistoriaClinica):Observable<IHistoriaClinica> {
     const headers = new HttpHeaders({
       "Content-Type": "application/json"
     });
 
-    return this.http.post(this.endpoint + this.pathHistClin, historia, {
+    return this.http.post<IHistoriaClinica>(this.endpoint + this.pathHistClin, historia, {
       headers,
-      responseType: "text"
     });
 
   }
@@ -63,5 +66,12 @@ export class FormulariosService {
     });
     
     return this.http.get(this.endpoint + this.pathDocXForm, {params});
+  }
+
+  agregarDocumentoExterno(documento: IHistClinPorDocExt):Observable<string> {
+    return this.http.post(this.endpoint + this.pathHistClin + "/HcPorDocExt", documento, {
+      headers: this.headAppJson,
+      responseType: "text"
+    });
   }
 }

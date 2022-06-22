@@ -1,8 +1,13 @@
-import { Component, ElementRef, Input, OnInit } from '@angular/core';
+import { Component, ElementRef, Input, OnInit, ViewChild } from '@angular/core';
 import { SummernoteOptions } from 'ngx-summernote/lib/summernote-options';
-import { IHistoriaClinica } from '../models/formularios';
+import { OrdenesMedicasComponent } from '../documentos-externos/components/ordenes-medicas/ordenes-medicas.component';
+import { IHistoriaClinica } from '../interfaces/formularios';
+import { IHistClinPorDocExt } from '../interfaces/historiaClinica';
 import { AfiliadosService } from '../services/afiliados.service';
 import { FormulariosService } from '../services/formularios.service';
+
+declare var $:any;
+const ID_INDIMANEJO:number = 2;
 
 @Component({
   selector: 'app-content',
@@ -27,6 +32,7 @@ export class ContentComponent implements OnInit {
     ],
   }
 
+  @ViewChild(OrdenesMedicasComponent) ordenesMedicas!: any;
   constructor(
     private formularioService: FormulariosService,
     private afilServ: AfiliadosService
@@ -39,9 +45,8 @@ export class ContentComponent implements OnInit {
   }
 
   initFormulario():void {
+    if(!this.iFrame) this.iFrame = document.querySelector("#iframe-visor");
     this.formularioService.selected.subscribe((res:any) => {
-      if(!this.iFrame) this.iFrame = document.querySelector("#iframe-visor");
-
       if(res.url && this.iFrame) {
         this.iFrame.src = res.url;
       }
@@ -61,35 +66,18 @@ export class ContentComponent implements OnInit {
     })
   }
 
+  // @ViewChild("summerIndManejo")
+  // public summerIndManejo!: HTMLIFrameElement;
+  // Función principal involucrada en el guardado
   guardarHistoriaClinica() {
-    if(this.iFrame) {
-      const form = this.iFrame.contentDocument?.forms[0];
-      if(!form) return;
-
-      const respuesta:any[] = [];
-
-      const formData:FormData = new FormData(form);
-      const els = form.querySelectorAll<HTMLInputElement>("input[name]");
-
-      formData.forEach((value, name) => {
-        respuesta.push({name, value});
-      });
-
-      els.forEach((el:HTMLInputElement) => {
-        const name = el.getAttribute("name");
-        const exists = respuesta.some(v => v.name === name);
-
-        if(exists) return;
-        
-        const respIndividual = {
-          name,
-          value: el.value
-        }
-
-        respuesta.push(respIndividual);
-      });
-
+    try {
+      console.log($("#editor-indManejo").summernote("code"));
+      const respuesta = this.validarHistoriaClinica();
+      
+      
       console.log(respuesta);
+
+      return;
       const historiaClinica:IHistoriaClinica = {
         nU_IDHISTORIACLINICA_HC: 0,
         nU_IDAFILIADO_HC: this.afilServ.afiliado.nU_IDAFILIADO_AFIL,
@@ -102,11 +90,84 @@ export class ContentComponent implements OnInit {
         fE_FECHA_HC: new Date()
       }
 
+      //Guardamoss la historia clínica seguida de los documentos
       this.formularioService.enviarHistoriaClinica(historiaClinica).subscribe(res => {
-        alert(res);
+        const idHistoriaClinica = res.nU_IDHISTORIACLINICA_HC;
+        console.log(res);
+        this.guardarDocumentos(idHistoriaClinica);
       })
-      
+    } catch (e) {
+      alert((<Error>e).message);
     }
+  }
+
+  validarHistoriaClinica():any {
+    if(!this.iFrame) return;
+
+    const respuesta:any[] = [];
+    const form = this.iFrame.contentDocument?.forms[0];
+    if(!form) return;
+
+
+    const formData:FormData = new FormData(form);
+    const els = form.querySelectorAll<HTMLInputElement>("input[name]");
+
+    // Revisamos el FormData
+    formData.forEach((value, name) => {
+      respuesta.push({name, value});
+    });
+
+    // Revisamos el valor de todos los elementos para asegurar el guardado
+    els.forEach((el:HTMLInputElement) => {
+      const name = el.getAttribute("name");
+      const exists = respuesta.some(v => v.name === name);
+
+      if(exists) return;
+      
+      const respIndividual = {
+        name,
+        value: el.value
+      }
+
+      respuesta.push(respIndividual);
+    });
+
+    return respuesta;
+  }
+
+  revisarDocumentos() {
+
+  }
+
+  guardarDocumentos(idHc: number) {
+    const docExtMedicamentos:IHistClinPorDocExt = this.ordenesMedicas.guardarOrdenesMedicas();
+    const docExtIndManejos:IHistClinPorDocExt = this.guardarIndicacionDeManejo();
+    const documentosExt:IHistClinPorDocExt[] = [docExtMedicamentos, docExtIndManejos];
+    
+
+    docExtMedicamentos.nU_IDHISTORIACLINICA_HCXDE = idHc;
+
+    documentosExt.forEach(doc => {
+      console.log(doc);
+      this.formularioService.agregarDocumentoExterno(docExtMedicamentos)
+      .subscribe(res => console.log(res));
+
+    })
+  }
+
+  guardarIndicacionDeManejo() {
+    const indicaciones = $("#editor-indManejo").summernote("code");
+    const estado = indicaciones === "<p><br></p>" ? 0 : 1;
+
+    const guardado:IHistClinPorDocExt = {
+      nU_ESTADO_HCXDE: estado,
+      nU_IDHISTORIACLINICA_HCXDE: 0,
+      nU_IDDOCEXTERNO_HCXDE: ID_INDIMANEJO,
+      tX_INFODILIGENCIADA_HCXDE: indicaciones,
+      nU_IDHCXDC_HCXDE: 0
+    }
+
+    return guardado;
   }
 
   revisarDocumentoAsociado(id: number): boolean {

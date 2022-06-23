@@ -1,10 +1,11 @@
-<div class="container-fluid mt-3">
+<div class="container-fluid mt-3" [formGroup]="incapacidadesForm">
     <h3 class="text-center">Incapacidades médicas</h3>
 
     <h4>Datos de identificación del usuario</h4>
     <div class="row">
         <mat-form-field class="col">
-            <mat-select [value]="0">
+            <mat-label>Tipo de documento</mat-label>
+            <mat-select [value]="0" formControlName="tipo_doc">
                 <mat-option [value]="0" selected>CC</mat-option>
                 <mat-option [value]="1">TI</mat-option>
                 <mat-option [value]="2">RC</mat-option>
@@ -19,53 +20,53 @@
 
         <mat-form-field class="col">
             <mat-label>No. de identificación</mat-label>
-            <input matInput type="number">
+            <input matInput type="number" formControlName="identificacion">
         </mat-form-field>
 
         <mat-form-field class="col">
             <mat-label>Nombre y apellido</mat-label>
-            <input matInput type="text">
+            <input matInput type="text" formControlName="nombre_apellido">
         </mat-form-field>
     </div>
 
     <div class="row">
         <mat-form-field class="col">
             <mat-label>Edad (años)</mat-label>
-            <input matInput type="number">
+            <input matInput type="number" formControlName="edad">
         </mat-form-field>
 
         <mat-form-field class="col">
             <mat-label>Género</mat-label>
-            <input matInput type="text">
+            <input matInput type="text" formControlName="genero">
         </mat-form-field>
 
         <mat-form-field class="col">
             <mat-label>Teléfono</mat-label>
-            <input matInput type="text">
+            <input matInput type="text" formControlName="telefono">
         </mat-form-field>
 
         <mat-form-field class="col">
             <mat-label>Tipo de usuario</mat-label>
-            <input matInput type="text">
+            <input matInput type="text" formControlName="tipo_usuario">
         </mat-form-field>
     </div>
 
     <div class="row">
         <mat-form-field class="col">
             <mat-label>Área o dependencia</mat-label>
-            <input matInput type="text">
+            <input matInput type="text" formControlName="area_dependecia">
         </mat-form-field>
         <mat-form-field class="col">
             <mat-label>Aseguradora de salud</mat-label>
-            <input matInput type="text">
+            <input matInput type="text" formControlName="aseguradora">
         </mat-form-field>
         <mat-form-field class="col">
             <mat-label>Número consecutivo</mat-label>
-            <input matInput type="text">
+            <input matInput type="text" formControlName="num_consecutivo">
         </mat-form-field>
         <mat-form-field class="col">
             <mat-label>Fecha generación</mat-label>
-            <input matInput type="date">
+            <input matInput type="date" formControlName="fecha_gen">
         </mat-form-field>
     </div>
 
@@ -73,53 +74,53 @@
     <div class="row">
         <mat-form-field class="col">
             <mat-label>Diagnóstico</mat-label>
-            <mat-select>
+            <mat-select formControlName="tipo_busqueda_dx">
                 <mat-option [value]="0">Código</mat-option>
                 <mat-option [value]="1">Nombre</mat-option>
             </mat-select>
         </mat-form-field>
         <mat-form-field class="col">
             <mat-label>Tipo de incapacidad</mat-label>
-            <mat-select>
+            <mat-select formControlName="tipo_incapacidad">
                 <mat-option [value]="inc.id" *ngFor="let inc of tipoIncapacidad">{{inc.value}}</mat-option>
             </mat-select>
         </mat-form-field>
         <mat-form-field class="col">
             <mat-label>Causa externa</mat-label>
-            <mat-select>
+            <mat-select formControlName="causa_externa">
                 <mat-option [value]="inc.id" *ngFor="let inc of causasExt">{{inc.value}}</mat-option>
             </mat-select>
         </mat-form-field>
         <mat-form-field class="col">
             <mat-label>Días acumulados</mat-label>
-            <input matInput type="number">
+            <input matInput type="number" formControlName="dias_acumulados">
         </mat-form-field>
     </div>
 
     <div class="row mb-5">
         <mat-form-field class="col-md-3">
-            <input matInput type="text">
+            <input matInput type="text" formControlName="diagnostico">
         </mat-form-field>
 
         <mat-form-field class="col-md-2">
             <mat-label>Fecha inicial</mat-label>
-            <input matInput type="date">
+            <input matInput type="date" formControlName="fecha_inicial">
         </mat-form-field>
 
         <mat-form-field class="col-md-2">
             <mat-label>Fecha final</mat-label>
-            <input matInput type="date">
+            <input matInput type="date" formControlName="fecha_final">
         </mat-form-field>
 
         <mat-form-field class="col-md-2">
             <mat-label>Días incapacidad</mat-label>
-            <input matInput type="number" name="dias_incapacidad" [(ngModel)]="incapacidadForm.diasIncapacidad" max="99">
+            <input matInput type="number" name="dias_incapacidad" formControlName="dias_incapacidad" min="0" max="99">
             <mat-hint>{{numeroLiteral}}</mat-hint>
         </mat-form-field>
 
-        <mat-radio-group class="col-md-3 d-flex align-items-center justify-content-between">
-            <mat-radio-button value="1">Primera vez</mat-radio-button>
-            <mat-radio-button value="2">Prorroga</mat-radio-button>
+        <mat-radio-group class="col-md-3 d-flex align-items-center justify-content-between" formControlName="opcion_procedimientos">
+            <mat-radio-button [value]="1">Primera vez</mat-radio-button>
+            <mat-radio-button [value]="2">Prorroga</mat-radio-button>
         </mat-radio-group>
     </div>
 
@@ -128,36 +129,36 @@
 
         <mat-form-field class="col-md-6">
             <mat-label>Profesional o IPS que generó</mat-label>
-            <input matInput type="text">
+            <input matInput type="text" formControlName="check_convalidacion">
         </mat-form-field>
 
         <mat-form-field class="col-md-3">
             <mat-label>Número de prórroga</mat-label>
-            <input matInput type="number" value="0">
+            <input matInput type="number" value="0" formControlName="numero_prorroga">
         </mat-form-field>
     </div>
 
     <div class="row mb-5">
         <mat-label>Observaciones</mat-label>
-        <mat-form-field class="col-12"><textarea matInput></textarea></mat-form-field>
+        <mat-form-field class="col-12"><textarea matInput formControlName="observaciones"></textarea></mat-form-field>
     </div>
 
     <div class="row">
         <mat-form-field class="col-md-6">
             <mat-label>Firma digital</mat-label>
-            <input matInput type="text">
+            <input matInput type="text" formControlName="firma_digital">
         </mat-form-field>
         <mat-form-field class="col-md-6">
             <mat-label>Nombre de profesional</mat-label>
-            <input matInput type="text">
+            <input matInput type="text" formControlName="nombre_profesional">
         </mat-form-field>
         <mat-form-field class="col-md-6">
             <mat-label>Especialidad</mat-label>
-            <input matInput type="text">
+            <input matInput type="text" formControlName="especialidad">
         </mat-form-field>
         <mat-form-field class="col-md-6">
             <mat-label>Registro médico</mat-label>
-            <input matInput type="text">
+            <input matInput type="text" formControlName="registro_medico">
         </mat-form-field>
     </div>
 </div>

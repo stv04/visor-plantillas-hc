@@ -1,5 +1,6 @@
 import { Component, ElementRef, Input, OnInit, ViewChild } from '@angular/core';
 import { SummernoteOptions } from 'ngx-summernote/lib/summernote-options';
+import { IncapacidadesComponent } from '../documentos-externos/components/incapacidades/incapacidades.component';
 import { OrdenesMedicasComponent } from '../documentos-externos/components/ordenes-medicas/ordenes-medicas.component';
 import { IHistoriaClinica } from '../interfaces/formularios';
 import { IHistClinPorDocExt } from '../interfaces/historiaClinica';
@@ -32,10 +33,11 @@ export class ContentComponent implements OnInit {
     ],
   }
 
-  @ViewChild(OrdenesMedicasComponent) ordenesMedicas!: any;
+  @ViewChild(OrdenesMedicasComponent) private ordenesMedicas: any;
+  @ViewChild(IncapacidadesComponent) private incapacidades!: IncapacidadesComponent;
   constructor(
     private formularioService: FormulariosService,
-    private afilServ: AfiliadosService
+    private afilServ: AfiliadosService,
   ) {
 
   }
@@ -57,6 +59,9 @@ export class ContentComponent implements OnInit {
         this.buscarDocExt(res.id);
       }
 
+      const formatoAtencion:HTMLLinkElement = document.querySelector<HTMLLinkElement>("#formatos-atencion-tab")!;
+      if(formatoAtencion) formatoAtencion.click();
+
     })
   }
 
@@ -76,8 +81,8 @@ export class ContentComponent implements OnInit {
       
       
       console.log(respuesta);
-
-      return;
+      // this.guardarDocumentos(23);
+      // return;
       const historiaClinica:IHistoriaClinica = {
         nU_IDHISTORIACLINICA_HC: 0,
         nU_IDAFILIADO_HC: this.afilServ.afiliado.nU_IDAFILIADO_AFIL,
@@ -140,18 +145,22 @@ export class ContentComponent implements OnInit {
   }
 
   guardarDocumentos(idHc: number) {
-    const docExtMedicamentos:IHistClinPorDocExt = this.ordenesMedicas.guardarOrdenesMedicas();
+    const docExtMedicamentos:IHistClinPorDocExt = this.ordenesMedicas?.guardarOrdenesMedicas();
     const docExtIndManejos:IHistClinPorDocExt = this.guardarIndicacionDeManejo();
-    const documentosExt:IHistClinPorDocExt[] = [docExtMedicamentos, docExtIndManejos];
+    const docExtIncapacidades: IHistClinPorDocExt = this.incapacidades?.incapacidades;
+
+    const documentosExt:IHistClinPorDocExt[] = [docExtMedicamentos, docExtIndManejos, docExtIncapacidades];
     
-
-    docExtMedicamentos.nU_IDHISTORIACLINICA_HCXDE = idHc;
-
-    documentosExt.forEach(doc => {
+    console.log(documentosExt);
+    documentosExt
+    .filter(doc => doc && this.revisarDocumentoAsociado(doc.nU_IDDOCEXTERNO_HCXDE))
+    .forEach(doc => {
+      doc.nU_IDHISTORIACLINICA_HCXDE = idHc;
       console.log(doc);
-      this.formularioService.agregarDocumentoExterno(docExtMedicamentos)
-      .subscribe(res => console.log(res));
+      return
 
+      this.formularioService.agregarDocumentoExterno(doc)
+      .subscribe(res => console.log(res));
     })
   }
 

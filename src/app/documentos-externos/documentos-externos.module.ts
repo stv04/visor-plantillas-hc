@@ -7,6 +7,7 @@ import { NgxSummernoteModule } from 'ngx-summernote';
 import { ConsentimientosInformadosComponent } from './components/consentimientos-informados/consentimientos-informados.component';
 import { HcAfiliadoComponent } from './modals/hc-afiliado/hc-afiliado.component';
 import { SweetAlert2Module } from '@sweetalert2/ngx-sweetalert2';
+import { DatePipe } from '@angular/common';
 
 
 
@@ -23,6 +24,7 @@ import { SweetAlert2Module } from '@sweetalert2/ngx-sweetalert2';
     ReactiveFormsModule,
     SweetAlert2Module
   ],
+  providers: [DatePipe],
   exports: [
     IncapacidadesComponent,
     OrdenesMedicasComponent,

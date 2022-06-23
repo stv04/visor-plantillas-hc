@@ -1,4 +1,9 @@
+import { DatePipe } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
+import { FormBuilder, Validators } from '@angular/forms';
+import { IHistClinPorDocExt } from 'src/app/interfaces/historiaClinica';
+
+const ID_INCAPACIDADES: number = 3;
 
 @Component({
   selector: 'app-incapacidades',
@@ -6,6 +11,43 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./incapacidades.component.css']
 })
 export class IncapacidadesComponent implements OnInit {
+  private fechaActual = this.dp.transform(new Date().getTime(), "yyyy-MM-dd");
+
+  public incapacidadesForm = this.fb.group({
+    tipo_doc: [0, Validators.required],
+    identificacion: [, Validators.required],
+    nombre_apellido: ["", Validators.required],
+    edad: ["", Validators.required],
+    genero: ["", Validators.required],
+    telefono: [, Validators.required],
+    tipo_usuario: [, Validators.required],
+
+    area_dependecia: [, Validators.required],
+    aseguradora: [, Validators.required],
+    num_consecutivo: [, Validators.required],
+    fecha_gen: [this.fechaActual, Validators.required],
+
+    tipo_busqueda_dx: [, Validators.required],
+    tipo_incapacidad: [, Validators.required],
+    causa_externa: [, Validators.required],
+    dias_acumulados: [, Validators.required],
+    diagnostico: [, Validators.required],
+    fecha_inicial: [this.fechaActual, Validators.required],
+    fecha_final: [this.fechaActual, Validators.required],
+    dias_incapacidad: [0],
+    opcion_procedimientos: [],
+
+    check_convalidacion: [],
+    profesiona_inc: [],
+    numero_prorroga: [],
+    observaciones: [],
+    
+    firma_digital: [],
+    nombre_profesional: [],
+    especialidad: [],
+    registro_medico: []
+  });
+
   public readonly tipoIncapacidad:any[] = [
     {
         "id": "01",
@@ -100,18 +142,19 @@ export class IncapacidadesComponent implements OnInit {
     }
   ]
 
-  public incapacidadForm = {
-    diasIncapacidad: 1
-  }
-
-  constructor() { }
+  constructor(private fb: FormBuilder, private dp: DatePipe) { }
 
   ngOnInit(): void {
+    // this.guardarIncapacidades();
+    this.calculoFecha();
+    console.log(this.incapacidadesForm);
   }
 
   get numeroLiteral():string {
-    const dias = this.incapacidadForm.diasIncapacidad;
-    if(!dias) return "";
+    const dias = this.incapacidadesForm.value.dias_incapacidad;
+    if(dias < 0) {
+      return "";
+    };
     const diasStr:string = dias.toString();
     const termino = dias === 1 ? "día" : "dias";
     
@@ -169,4 +212,55 @@ export class IncapacidadesComponent implements OnInit {
     
   }
 
+  calculoFecha():void {
+    const calcular = (f:string, i:string):void => {
+      const dividendo = 1000 * 60 * 60 * 24;
+
+      const diferencia = new Date(f).getTime() - new Date(i).getTime();
+
+      this.incapacidadesForm.get("dias_incapacidad")?.setValue(diferencia / dividendo);
+    }
+
+    this.incapacidadesForm.get("fecha_final")?.valueChanges.subscribe(fechaF => {
+      const fechaI = this.incapacidadesForm.get("fecha_inicial")?.value;
+      calcular(fechaF, fechaI);
+    });
+    
+    this.incapacidadesForm.get("fecha_inicial")?.valueChanges.subscribe(fechaI => {
+      const fechaF = this.incapacidadesForm.get("fecha_final")?.value;
+      calcular(fechaF, fechaI);
+    });
+
+    
+  }
+
+  get validarIncapacidades(): boolean {
+    return this.formatoDiligenciado && this.incapacidadesForm.valid;
+  }
+
+  get formatoDiligenciado(): boolean {
+    const controles = this.incapacidadesForm.controls;
+    let diligenciado = false;
+
+    for (const clave in controles) {
+      const control = controles[clave];
+      if(control.touched && control.value) {
+        diligenciado = true;
+        break;
+      }
+    }
+
+    return diligenciado;
+  }
+
+  get incapacidades(): IHistClinPorDocExt {
+    const estado = this.formatoDiligenciado ? 1 : 0;
+    return {
+      nU_ESTADO_HCXDE: estado,
+      nU_IDHISTORIACLINICA_HCXDE: 0,
+      nU_IDDOCEXTERNO_HCXDE: ID_INCAPACIDADES,
+      tX_INFODILIGENCIADA_HCXDE: JSON.stringify(this.incapacidadesForm.value),
+      nU_IDHCXDC_HCXDE: 0
+    };
+  }
 }

@@ -1,4 +1,5 @@
 import { Component, ElementRef, Input, OnInit, ViewChild } from '@angular/core';
+import { SwalComponent } from '@sweetalert2/ngx-sweetalert2';
 import { SummernoteOptions } from 'ngx-summernote/lib/summernote-options';
 import { IncapacidadesComponent } from '../documentos-externos/components/incapacidades/incapacidades.component';
 import { OrdenesMedicasComponent } from '../documentos-externos/components/ordenes-medicas/ordenes-medicas.component';
@@ -66,22 +67,25 @@ export class ContentComponent implements OnInit {
   }
 
   buscarDocExt(id: number) {
+    this.documentosExternos = [];
     this.formularioService.obtenerDocumentosAsociados(id).subscribe(res => {
       this.documentosExternos = res.map((doc:any) => doc.nU_IDDOCUMENTO_FORMXDOC);
     })
   }
 
-  // @ViewChild("summerIndManejo")
-  // public summerIndManejo!: HTMLIFrameElement;
+  @ViewChild("errorSwal")
+  public errorSwal!: SwalComponent;
+  @ViewChild("swalFinalizado")
+  public swalFinalizado!: SwalComponent;
   // Función principal involucrada en el guardado
   guardarHistoriaClinica() {
     try {
       console.log($("#editor-indManejo").summernote("code"));
       const respuesta = this.validarHistoriaClinica();
+
+      //Se la validan los dumentos que requieran validación, si es invalido arroja una excepción
+      this.validarDocumentos();
       
-      
-      console.log(respuesta);
-      // this.guardarDocumentos(23);
       // return;
       const historiaClinica:IHistoriaClinica = {
         nU_IDHISTORIACLINICA_HC: 0,
@@ -100,19 +104,22 @@ export class ContentComponent implements OnInit {
         const idHistoriaClinica = res.nU_IDHISTORIACLINICA_HC;
         console.log(res);
         this.guardarDocumentos(idHistoriaClinica);
+        this.swalFinalizado.fire();
       })
     } catch (e) {
-      alert((<Error>e).message);
+      this.errorSwal.swalOptions = {text: (<Error>e).message};
+      this.errorSwal.fire()
     }
   }
 
   validarHistoriaClinica():any {
-    if(!this.iFrame) return;
+    if(!this.iFrame) throw new Error("Error en la lectura del formato");
 
     const respuesta:any[] = [];
     const form = this.iFrame.contentDocument?.forms[0];
-    if(!form) return;
+    if(!form) throw new Error("Error al conseguir un formulario");;
 
+    // if(!form.checkValidity()) throw new Error("El formulario no ha sido diligenciado correctamente, por favor, verifique e intente nuevamente");
 
     const formData:FormData = new FormData(form);
     const els = form.querySelectorAll<HTMLInputElement>("input[name]");
@@ -140,8 +147,10 @@ export class ContentComponent implements OnInit {
     return respuesta;
   }
 
-  revisarDocumentos() {
+  validarDocumentos() {
+    const validInc:boolean = this.incapacidades.validarIncapacidades;
 
+    if(!validInc && this.revisarDocumentoAsociado(3)) throw new Error("Las incapacidades han sido diligenciadas, pero no se ha llenado correctamente. Por favor, verifique y vuelva a intentar.");
   }
 
   guardarDocumentos(idHc: number) {
@@ -157,7 +166,7 @@ export class ContentComponent implements OnInit {
     .forEach(doc => {
       doc.nU_IDHISTORIACLINICA_HCXDE = idHc;
       console.log(doc);
-      return
+      // return
 
       this.formularioService.agregarDocumentoExterno(doc)
       .subscribe(res => console.log(res));
@@ -180,6 +189,7 @@ export class ContentComponent implements OnInit {
   }
 
   revisarDocumentoAsociado(id: number): boolean {
+    if(id === 0) return true;
     return this.documentosExternos.some(d => d === id);
   }
 

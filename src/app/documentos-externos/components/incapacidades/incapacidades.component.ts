@@ -1,7 +1,9 @@
 import { DatePipe } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
-import { FormBuilder, Validators } from '@angular/forms';
+import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { IHistClinPorDocExt } from 'src/app/interfaces/historiaClinica';
+import { AfilConfigService } from 'src/app/services/afil-config.service';
+import { AfiliadosService } from 'src/app/services/afiliados.service';
 
 const ID_INCAPACIDADES: number = 3;
 
@@ -13,28 +15,29 @@ const ID_INCAPACIDADES: number = 3;
 export class IncapacidadesComponent implements OnInit {
   private fechaActual = this.dp.transform(new Date().getTime(), "yyyy-MM-dd");
 
-  public incapacidadesForm = this.fb.group({
-    tipo_doc: [0, Validators.required],
-    identificacion: [, Validators.required],
+  private isDisabled:boolean = true;
+  public incapacidadesForm:FormGroup = this.fb.group({
+    tipo_doc: ["", Validators.required],
+    identificacion: ["", Validators.required],
     nombre_apellido: ["", Validators.required],
     edad: ["", Validators.required],
     genero: ["", Validators.required],
-    telefono: [, Validators.required],
-    tipo_usuario: [, Validators.required],
+    telefono: ["", Validators.required],
+    tipo_usuario: ["", Validators.required],
 
-    area_dependecia: [, Validators.required],
-    aseguradora: [, Validators.required],
-    num_consecutivo: [, Validators.required],
+    area_dependecia: [],
+    aseguradora: [],
+    num_consecutivo: [],
     fecha_gen: [this.fechaActual, Validators.required],
 
     tipo_busqueda_dx: [, Validators.required],
     tipo_incapacidad: [, Validators.required],
     causa_externa: [, Validators.required],
-    dias_acumulados: [, Validators.required],
+    dias_acumulados: [],
     diagnostico: [, Validators.required],
-    fecha_inicial: [this.fechaActual, Validators.required],
-    fecha_final: [this.fechaActual, Validators.required],
-    dias_incapacidad: [0],
+    fecha_inicial: [this.fechaActual],
+    fecha_final: [this.fechaActual],
+    dias_incapacidad: [0, Validators.required],
     opcion_procedimientos: [],
 
     check_convalidacion: [],
@@ -47,6 +50,8 @@ export class IncapacidadesComponent implements OnInit {
     especialidad: [],
     registro_medico: []
   });
+
+  private incapacidadesFormDisabled:FormGroup = this.fb.group({});
 
   public readonly tipoIncapacidad:any[] = [
     {
@@ -142,12 +147,12 @@ export class IncapacidadesComponent implements OnInit {
     }
   ]
 
-  constructor(private fb: FormBuilder, private dp: DatePipe) { }
+  constructor(private fb: FormBuilder, private dp: DatePipe, private afilConfServ: AfilConfigService) { }
 
   ngOnInit(): void {
     // this.guardarIncapacidades();
     this.calculoFecha();
-    console.log(this.incapacidadesForm);
+    this.preCargarInformacionAfiliado();
   }
 
   get numeroLiteral():string {
@@ -210,32 +215,10 @@ export class IncapacidadesComponent implements OnInit {
     return res + " " + termino;
 
     
-  }
-
-  calculoFecha():void {
-    const calcular = (f:string, i:string):void => {
-      const dividendo = 1000 * 60 * 60 * 24;
-
-      const diferencia = new Date(f).getTime() - new Date(i).getTime();
-
-      this.incapacidadesForm.get("dias_incapacidad")?.setValue(diferencia / dividendo);
-    }
-
-    this.incapacidadesForm.get("fecha_final")?.valueChanges.subscribe(fechaF => {
-      const fechaI = this.incapacidadesForm.get("fecha_inicial")?.value;
-      calcular(fechaF, fechaI);
-    });
-    
-    this.incapacidadesForm.get("fecha_inicial")?.valueChanges.subscribe(fechaI => {
-      const fechaF = this.incapacidadesForm.get("fecha_final")?.value;
-      calcular(fechaF, fechaI);
-    });
-
-    
-  }
+  } 
 
   get validarIncapacidades(): boolean {
-    return this.formatoDiligenciado && this.incapacidadesForm.valid;
+    return !this.formatoDiligenciado || this.incapacidadesForm.valid;
   }
 
   get formatoDiligenciado(): boolean {
@@ -259,8 +242,81 @@ export class IncapacidadesComponent implements OnInit {
       nU_ESTADO_HCXDE: estado,
       nU_IDHISTORIACLINICA_HCXDE: 0,
       nU_IDDOCEXTERNO_HCXDE: ID_INCAPACIDADES,
-      tX_INFODILIGENCIADA_HCXDE: JSON.stringify(this.incapacidadesForm.value),
+      tX_INFODILIGENCIADA_HCXDE: JSON.stringify(this.formulario),
       nU_IDHCXDC_HCXDE: 0
     };
+  }
+
+  get formulario() {
+    const prevDis = this.isDisabled;
+    // this.incapacidadesForm.enable();
+    const valoresInhabilitados = this.incapacidadesFormDisabled.value;
+    console.log(valoresInhabilitados);
+    // this.incapacidadesFormDisabled.enable();
+    const values = Object.assign(valoresInhabilitados, this.incapacidadesForm.value);
+    this.isDisabled = prevDis;
+
+    return values
+  }
+
+  calculoFecha():void {
+    const calcular = (f:string, i:string):void => {
+      const dividendo = 1000 * 60 * 60 * 24;
+
+      const diferencia = new Date(f).getTime() - new Date(i).getTime();
+
+      this.incapacidadesForm.get("dias_incapacidad")?.setValue(diferencia / dividendo);
+    }
+
+    this.incapacidadesForm.get("fecha_final")?.valueChanges.subscribe(fechaF => {
+      const fechaI = this.incapacidadesForm.get("fecha_inicial")?.value;
+      calcular(fechaF, fechaI);
+    });
+    
+    this.incapacidadesForm.get("fecha_inicial")?.valueChanges.subscribe(fechaI => {
+      const fechaF = this.incapacidadesForm.get("fecha_final")?.value;
+      calcular(fechaF, fechaI);
+    });
+  
+  }
+
+  preCargarInformacionAfiliado() {
+    const valores: string[][] = [
+      ["tipo_doc", "tipo_doc"],
+      ["identificacion", "numero_iden"],
+      ["nombre_apellido", "nombre_completo"],
+      ["edad", "edad"],
+      ["genero", "sexo"],
+      ["telefono", "telefono"],
+      ["tipo_usuario", "tipo_usuario"],
+    ];
+    
+    valores.forEach(([controlName, campo]) => this.cargarInfoAfil(controlName, campo));
+    this.afilConfServ.obtenerServicios("fecha_gen")
+    .then(res => {
+      if(!res) return;
+
+      const controlFecha = this.incapacidadesForm.get("fecha_gen");
+      const fechaRecibida = new Date(res).getTime();
+      controlFecha?.setValue(this.dp.transform(fechaRecibida, "yyyy-MM-dd"));
+      controlFecha?.disable();
+
+      this.incapacidadesFormDisabled.setControl("fecha_gen", new FormControl(fechaRecibida));
+
+
+    });
+
+  }
+  
+  async cargarInfoAfil(nameEl:string, campo:string): Promise<void> {
+    const consulta = await this.afilConfServ.obtenerServicios(campo);
+    const control = this.incapacidadesForm.get(nameEl);
+    
+    if(!consulta || !control) return;
+
+    control.patchValue(consulta);
+    control.disable();
+
+    this.incapacidadesFormDisabled.setControl(nameEl, new FormControl(consulta));
   }
 }

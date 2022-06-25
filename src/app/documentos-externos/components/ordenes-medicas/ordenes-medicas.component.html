@@ -46,11 +46,11 @@
                     <div class="col-md-3" *ngIf="tipo_orden == 1">
                         <mat-form-field>
                             <mat-label>Especialidad</mat-label>
-                            <input matInput type="text" name="especialidad" formControlName="especialidad">
+                            <input matInput type="text" name="especialidad" formControlName="especialidad" [required]="tipo_orden == 1">
                         </mat-form-field>
                     </div>
                     <div class="col-md text-right">
-                        <button mat-raised-button color="primary" (click)="ordenar()">Ordenar</button>
+                        <button mat-raised-button color="primary" (click)="ordenar()" [disabled]="!procedimiento.valid">Ordenar</button>
                     </div>
                 </div>           
             </div>
@@ -107,6 +107,7 @@
                     </mat-form-field>
                     
                     <mat-form-field class="col-md-2">
+                        <mat-label>Tiempo</mat-label>
                         <mat-select name="tiempo" formControlName="tiempo">
                             <mat-option value="1">Minutos</mat-option>
                             <mat-option value="2">Horas</mat-option>
@@ -138,18 +139,18 @@
                         <textarea matInput formControlName="observaciones"></textarea>
                     </mat-form-field>
                 </div>
-                <button mat-raised-button color="primary" (click)="ordenar()">Ordenar</button>
+                <button mat-raised-button color="primary" (click)="ordenar()" [disabled]="!medicamento.valid">Ordenar</button>
 
             </div>
 
             <!-- Orden de tipo optometría -->
-            <div class="perfiles" *ngIf="tipo_orden == 5">
+            <div class="perfiles" *ngIf="tipo_orden == 5" [formGroup]="optometria">
                 <div class="row">
                     <h4 class="col-2 align-bottom">Distancia al vértice</h4>
                     <div class="col-5 d-flex flex-row align-items-end">
                         <mat-form-field style="width: 60%;">
                             <mat-label>OD:</mat-label>
-                            <input matInput type="number">
+                            <input matInput type="number" formControlName="distVerticeOjoDer">
                         </mat-form-field>
 
                         <h4 class="ml-1">Milimetros</h4>
@@ -157,7 +158,7 @@
                     <div class="col-5 d-flex flex-row align-items-end">
                         <mat-form-field style="width: 60%;">
                             <mat-label>OI:</mat-label>
-                            <input matInput type="number">
+                            <input matInput type="number" formControlName="distVerticeOjoIzq">
                         </mat-form-field>
 
                         <h4 class="ml-1">Milimetros</h4>
@@ -180,24 +181,24 @@
                             <td>Ojo Derecho (LEJOS)</td>
                             <td>
                                 <mat-form-field style="width: 80px">
-                                    <input matInput type="number">
+                                    <input matInput type="number" formControlName="esferaOjoDerLejos">
                                 </mat-form-field>
                             </td>
                             <td>
                                 <mat-form-field style="width: 80px">
-                                    <input matInput type="number">
+                                    <input matInput type="number" formControlName="cilindroOjoDerLejos">
                                 </mat-form-field>
                             </td>
                             <td>
                                 <mat-form-field style="width: 80px">
-                                    <input matInput type="number">
+                                    <input matInput type="number" formControlName="ejeOjoDerLejos">
                                 </mat-form-field>
                             </td>
                             <td>
                                 <div class="d-flex flex-row align-items-baseline">
                                     <span>20/</span>
                                     <mat-form-field style="width: 80px">
-                                        <input matInput type="number">
+                                        <input matInput type="number" formControlName="agudezaVisualOjoDerLejos">
                                     </mat-form-field>
                                 </div>
                             </td>
@@ -206,24 +207,24 @@
                             <td>Ojo Izquierdo (LEJOS)</td>
                             <td>
                                 <mat-form-field style="width: 80px">
-                                    <input matInput type="number">
+                                    <input matInput type="number" formControlName="esferaOjoIzqLejos">
                                 </mat-form-field>
                             </td>
                             <td>
                                 <mat-form-field style="width: 80px">
-                                    <input matInput type="number">
+                                    <input matInput type="number" formControlName="cilindroOjoIzqLejos">
                                 </mat-form-field>
                             </td>
                             <td>
                                 <mat-form-field style="width: 80px">
-                                    <input matInput type="number">
+                                    <input matInput type="number" formControlName="ejeOjoIzqLejos">
                                 </mat-form-field>
                             </td>
                             <td>
                                 <div class="d-flex flex-row align-items-baseline">
                                     <span>20/</span>
                                     <mat-form-field style="width: 80px">
-                                        <input matInput type="number">
+                                        <input matInput type="number" formControlName="agudezaVisualOjoIzqLejos">
                                     </mat-form-field>
                                 </div>
                             </td>
@@ -232,24 +233,24 @@
                             <td>Ojo Derecho (CERCA)</td>
                             <td>
                                 <mat-form-field style="width: 80px">
-                                    <input matInput type="number">
+                                    <input matInput type="number" formControlName="esferaOjoDerCerca">
                                 </mat-form-field>
                             </td>
                             <td>
                                 <mat-form-field style="width: 80px">
-                                    <input matInput type="number">
+                                    <input matInput type="number" formControlName="cilindroOjoDerCerca">
                                 </mat-form-field>
                             </td>
                             <td>
                                 <mat-form-field style="width: 80px">
-                                    <input matInput type="number">
+                                    <input matInput type="number" formControlName="ejeOjoDerCerca">
                                 </mat-form-field>
                             </td>
                             <td>
                                 <div class="d-flex flex-row align-items-baseline">
                                     <span>20/</span>
                                     <mat-form-field style="width: 80px">
-                                        <input matInput type="number">
+                                        <input matInput type="number" formControlName="agudezaVisualOjoDerCerca">
                                     </mat-form-field>
                                 </div>
                             </td>
@@ -258,24 +259,24 @@
                             <td>Ojo Izquierdo (CERCA)</td>
                             <td>
                                 <mat-form-field style="width: 80px">
-                                    <input matInput type="number">
+                                    <input matInput type="number" formControlName="esferaOjoIzqCerca">
                                 </mat-form-field>
                             </td>
                             <td>
                                 <mat-form-field style="width: 80px">
-                                    <input matInput type="number">
+                                    <input matInput type="number" formControlName="cilindroOjoIzqCerca">
                                 </mat-form-field>
                             </td>
                             <td>
                                 <mat-form-field style="width: 80px">
-                                    <input matInput type="number">
+                                    <input matInput type="number" formControlName="ejeOjoIzqCerca">
                                 </mat-form-field>
                             </td>
                             <td>
                                 <div class="d-flex flex-row align-items-baseline">
                                     <span>20/</span>
                                     <mat-form-field style="width: 80px">
-                                        <input matInput type="number">
+                                        <input matInput type="number" formControlName="agudezaVisualOjoIzqCerca">
                                     </mat-form-field>
                                 </div>
                             </td>
@@ -287,12 +288,12 @@
                     <h4 class="col-4"><b>Adición</b></h4>
                     <mat-form-field class="col-4">
                         <mat-label>Ojo Derecho:</mat-label>
-                        <input matInput type="number">
+                        <input matInput type="number" formControlName="adicionOjoDer">
                     </mat-form-field>
 
                     <mat-form-field class="col-4">
                         <mat-label>Ojo Izquierdo:</mat-label>
-                        <input matInput type="number">
+                        <input matInput type="number" formControlName="adicionOjoIzq">
                     </mat-form-field>
                 </div>
 
@@ -300,32 +301,32 @@
                     <h4 class="col-4"><b>Distancia Nasopupilar</b></h4>
                     <mat-form-field class="col-4">
                         <mat-label>Ojo Derecho:</mat-label>
-                        <input matInput type="number">
+                        <input matInput type="number" formControlName="distNazopupilarOjoDer">
                     </mat-form-field>
                     <mat-form-field class="col-4">
                         <mat-label>Ojo Izquierdo:</mat-label>
-                        <input matInput type="number">
+                        <input matInput type="number" formControlName="distNazopupilarOjoIzq">
                     </mat-form-field>
                 </div>
 
                 <div class="row">
                     <mat-form-field class="col-3">
                         <mat-label>Uso</mat-label>
-                        <input matInput type="text">
+                        <input matInput type="text" formControlName="uso">
                     </mat-form-field>
                     <mat-form-field class="col-3">
                         <mat-label>material</mat-label>
-                        <input matInput type="text">
+                        <input matInput type="text" formControlName="material">
                     </mat-form-field>
                     <mat-form-field class="col-3">
                         <mat-label>Tipo de lentes</mat-label>
-                        <mat-select>
+                        <mat-select formControlName="tipo_lente">
                             <mat-option [value]="tipo.id" *ngFor="let tipo of tipos_lente">{{ tipo.value }}</mat-option>
                         </mat-select>
                     </mat-form-field>
                     <mat-form-field class="col-3">
                         <mat-label>Color filtro</mat-label>
-                        <input matInput type="text">
+                        <input matInput type="text" formControlName="color_filtro">
                     </mat-form-field>
                 </div>
 
@@ -333,23 +334,23 @@
                     <h4 class="col-4"><b>Altura</b></h4>
                     <mat-form-field class="col-4">
                         <mat-label>Ojo Derecho:</mat-label>
-                        <input matInput type="number">
+                        <input matInput type="number" formControlName="alturaOjoDer">
                     </mat-form-field>
                     <mat-form-field class="col-4">
                         <mat-label>Ojo Izquierdo:</mat-label>
-                        <input matInput type="number">
+                        <input matInput type="number" formControlName="alturaOjoIzq">
                     </mat-form-field>
                 </div>
 
                 <div class="row">
                     <mat-form-field class="col-12">
                         <mat-label>Observaciones</mat-label>
-                        <textarea matInput name="" id=""></textarea>
+                        <textarea matInput name="" id=""  formControlName="observaciones"></textarea>
                     </mat-form-field>
                 </div>
 
                 <div class="text-right">
-                    <button mat-raised-button color="primary" (click)="ordenar()">ORDENAR</button>
+                    <button mat-raised-button color="primary" (click)="ordenar()" [disabled]="!optometria.valid">ORDENAR</button>
                 </div>
             </div>
         </div>
@@ -360,9 +361,9 @@
             <table mat-table [dataSource]="procedimientos" [style.width]="'100%'">
                 <ng-container matColumnDef="actions">
                     <th mat-header-cell *matHeaderCellDef></th>
-                    <td mat-cell *matCellDef="let element">
+                    <td mat-cell *matCellDef="let element; let i = index">
                         <button mat-icon-button><mat-icon>cancel</mat-icon></button>
-                        <button mat-icon-button (click)="editarOrden(element)"><mat-icon>arrow_upward</mat-icon></button>
+                        <button mat-icon-button (click)="editarOrden(element, i)"><mat-icon>arrow_upward</mat-icon></button>
                     </td>
                 </ng-container>
 
@@ -400,9 +401,9 @@
             <table mat-table [dataSource]="medicamentos" [style.width]="'100%'">
                 <ng-container matColumnDef="actions">
                     <th mat-header-cell *matHeaderCellDef></th>
-                    <td mat-cell *matCellDef="let element">
+                    <td mat-cell *matCellDef="let element; let i = index">
                         <button mat-icon-button><mat-icon>cancel</mat-icon></button>
-                        <button mat-icon-button><mat-icon>arrow_upward</mat-icon></button>
+                        <button mat-icon-button (click)="editarOrden(element, i)"><mat-icon>arrow_upward</mat-icon></button>
                     </td>
                 </ng-container>
 
@@ -424,9 +425,9 @@
             <table mat-table [dataSource]="optometrias" [style.width]="'100%'">
                 <ng-container matColumnDef="actions">
                     <th mat-header-cell *matHeaderCellDef></th>
-                    <td mat-cell *matCellDef="let element">
+                    <td mat-cell *matCellDef="let element; let i = index">
                         <button mat-icon-button><mat-icon>cancel</mat-icon></button>
-                        <button mat-icon-button><mat-icon>arrow_upward</mat-icon></button>
+                        <button mat-icon-button (click)="editarOrden(element, i)"><mat-icon>arrow_upward</mat-icon></button>
                     </td>
                 </ng-container>
 
@@ -447,5 +448,5 @@
   title="Fómula ordenada"
   text="Ya existe una fórmula de optometría ordenada"
   icon="warning"
-  >
+>
 </swal>

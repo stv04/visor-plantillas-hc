@@ -5,7 +5,8 @@
     <div class="row">
         <mat-form-field class="col">
             <mat-label>Tipo de documento</mat-label>
-            <mat-select [value]="0" formControlName="tipo_doc">
+            <!--Por ahora se utilizará siempre un campo de tipo input-->
+            <mat-select [value]="0" formControlName="tipo_doc" *ngIf="false">
                 <mat-option [value]="0" selected>CC</mat-option>
                 <mat-option [value]="1">TI</mat-option>
                 <mat-option [value]="2">RC</mat-option>
@@ -16,6 +17,7 @@
                 <mat-option [value]="7">NU</mat-option>
                 <mat-option [value]="8">NIT</mat-option>
             </mat-select>
+            <input matInput type="text" formControlName="tipo_doc">
         </mat-form-field>
 
         <mat-form-field class="col">
@@ -162,4 +164,3 @@
         </mat-form-field>
     </div>
 </div>
-

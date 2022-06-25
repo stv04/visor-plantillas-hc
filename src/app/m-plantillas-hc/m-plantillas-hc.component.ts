@@ -33,6 +33,10 @@ export class MPlantillasHcComponent implements OnInit {
   }
 
   selectFormulario(id:number) {
+    if(this.afilServ.afiliado) {
+      this.formulariosService.idAfiliado = this.afilServ.afiliado.nU_IDAFILIADO_AFIL;
+    }
+
     this.formulariosService.get(id).subscribe(observer => {
       this.dialog.closeAll();
       this.renderFormulario(observer);
@@ -73,6 +77,22 @@ export class MPlantillasHcComponent implements OnInit {
       if(el) await this.obtenerServicios(el);
     }
 
+    const form:HTMLFormElement|null = domHtml.querySelector<HTMLFormElement>("form");
+    const body = domHtml.body;
+
+    if(!form) {
+      console.log("no tiene formulario")
+      const childs = body.childNodes;
+      const formulario = domHtml.createElement("form");
+
+      console.log("CHILD NODES => ", childs);
+      console.log("CHILDREN => ", body.children);
+      while(childs.length) {
+        formulario.appendChild(childs[0]);
+      }
+      body.appendChild(formulario);
+    }
+
 
     estructura += setHeader(css);
     estructura += domHtml.body.outerHTML;
@@ -104,8 +124,6 @@ export class MPlantillasHcComponent implements OnInit {
       eval?:string,
       separador?:string
     }
-
-    
 
     if(atributo) {
       const [servicio, query] = atributo;

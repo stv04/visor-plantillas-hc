@@ -1,5 +1,5 @@
 import { Component, Input, OnInit, ViewChild } from '@angular/core';
-import { AbstractControl, FormBuilder, FormControl, FormGroup, FormGroupDirective } from '@angular/forms';
+import { AbstractControl, FormBuilder, FormControl, FormGroup, FormGroupDirective, ValidationErrors, ValidatorFn, Validators } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
 import { MatTable, MatTableDataSource } from '@angular/material/table';
 import { SwalComponent } from '@sweetalert2/ngx-sweetalert2';
@@ -18,74 +18,76 @@ export class OrdenesMedicasComponent implements OnInit {
   public orden_seleccionada:number = 0;
   public procedimiento = this.fb.group({
     tipo_orden: [0],
-    procedimiento: [""],
-    observaciones: [""],
-    cantidad: [""],
+    procedimiento: ["", Validators.required],
+    observaciones: ["", Validators.required],
+    cantidad: ["", Validators.required],
     pyp: [true],
     noPos: [true],
     especialidad: [""]
   });
 
   public medicamento = this.fb.group({
-    tipo_med: [0],
+    tipo_med: [0, Validators.required],
     tipo_orden: [0],
-    medicamento: [""],
+    medicamento: ["", Validators.required],
     procedimiento: null,
     cantidad: 1,
     titulo: [""],
-    presentacion: [11],
-    dosis: [0],
-    frecuencia: [0],
-    tiempo: [""],
-    via: [11],
+    presentacion: [11, Validators.required],
+    dosis: [0, Validators.required],
+    frecuencia: [0, Validators.required],
+    tiempo: ["", Validators.required],
+    via: [11, Validators.required],
     concentracion: [""],
     observaciones: ""
   });
 
   public optometria = this.fb.group({
-    distVerticeOjoDer: null,
-    distVerticeOjoIzq: null,
+    distVerticeOjoDer: [null, Validators.required],
+    distVerticeOjoIzq: [null, Validators.required],
 
     // Ojo derecho lejos
-    esferaOjoDerLejos: null,
-    cilindroOjoDerLejos: null,
-    ejeOjoDerLejos: null,
-    agudezaVisualOjoDerLejos: null,
+    esferaOjoDerLejos: [null, Validators.required],
+    cilindroOjoDerLejos: [null, Validators.required],
+    ejeOjoDerLejos: [null, Validators.required],
+    agudezaVisualOjoDerLejos: [null, Validators.required],
     
     // Ojos izquierdo lejos
-    esferaOjoIzqLejos: null,
-    cilindroOjoIzqLejos: null,
-    ejeOjoIzqLejos: null,
-    agudezaVisualOjoIzqLejos: null,
+    esferaOjoIzqLejos: [null, Validators.required],
+    cilindroOjoIzqLejos: [null, Validators.required],
+    ejeOjoIzqLejos: [null, Validators.required],
+    agudezaVisualOjoIzqLejos: [null, Validators.required],
+    
+    // Ojos derecho cerca
+    esferaOjoDerCerca: [null, Validators.required],
+    cilindroOjoDerCerca: [null, Validators.required],
+    ejeOjoDerCerca: [null, Validators.required],
+    agudezaVisualOjoDerCerca: [null, Validators.required],
     
     // Ojos izquierdo cerca
-    esferaOjoDerCerca: null,
-    cilindroOjoDerCerca: null,
-    ejeOjoDerCerca: null,
-    agudezaVisualOjoDerCerca: null,
+    esferaOjoIzqCerca: [null, Validators.required],
+    cilindroOjoIzqCerca: [null, Validators.required],
+    ejeOjoIzqCerca: [null, Validators.required],
+    agudezaVisualOjoIzqCerca: [null, Validators.required],
+
+    adicionOjoDer: [null, Validators.required],
+    adicionOjoIzq: [null, Validators.required],
     
-    // Ojos izquierdo cerca
-    esferaOjoIzqCerca: null,
-    cilindroOjoIzqCerca: null,
-    ejeOjoIzqCerca: null,
-    agudezaVisualOjoIzqCerca: null,
+    distNazopupilarOjoDer: [null, Validators.required],
+    distNazopupilarOjoIzq: [null, Validators.required],
 
-    adicionOjoDer: null,
-    adicionOjoIzq: null,
-    
-    distNazopupilarOjoDer: null,
-    distNazopupilarOjoIzq: null,
+    uso: [null, Validators.required],
+    material: [null, Validators.required],
+    tipo_lente: [null, Validators.required],
+    color_filtro: [null, Validators.required],
 
-    uso: null,
-    materila: null,
-    tipo_lente: null,
-    color_filtro: null,
+    alturaOjoDer: [null, Validators.required],
+    alturaOjoIzq: [null, Validators.required],
 
-    alturaOjoDer: null,
-    alturaOjoIzq: null,
-
-    observaciones: null,
+    observaciones: [null, Validators.required],
   });
+
+  private editando: number[]|undefined[] = [];
   
   public readonly tipo_ordenes:string[] = [
     "Apoyo Dx", "Consulta", "Quirúrgico", "Otros procedimientos/Servicios",
@@ -215,37 +217,53 @@ export class OrdenesMedicasComponent implements OnInit {
 
   @ViewChild("warnSwal")
   public readonly warnSwal!: SwalComponent;
-  ordenar() {
+  ordenar():void {
+    const isEditing:number|undefined = this.editando[this.tipo_orden];
     if(this.tipo_orden < 4) {
       this.procedimiento.setControl("tipo_orden", new FormControl(this.tipo_orden));
-      this.dataProcedimientos.push(this.procedimiento.value);
-      console.log(this.procedimiento.value);
+      
+      if(isEditing !== undefined) {
+        this.dataProcedimientos[isEditing] = this.procedimiento.value
+        this.editando[this.tipo_orden] = undefined;
+      } else {
+        this.dataProcedimientos.push(this.procedimiento.value);
+      }
   
       this.procedimientos.data = this.dataProcedimientos;
-      this.orden_seleccionada = 1-1;
+      this.orden_seleccionada = 0;
 
+      console.log(this.dataProcedimientos);
       this.procedimiento.reset();
 
     } else if (this.tipo_orden == 4) {
       this.medicamento.setControl("tipo_orden", new FormControl(this.tipo_orden));
 
-      this.dataMedicamentos.push(this.medicamento.value);
+      if(isEditing !== undefined) {
+        this.dataMedicamentos[isEditing] = this.medicamento.value
+        this.editando[this.tipo_orden] = undefined;
+      } else {
+        this.dataMedicamentos.push(this.medicamento.value);
+      }
   
       this.medicamentos.data = this.dataMedicamentos;
       this.orden_seleccionada = 1;
 
       this.medicamento.reset();
     } else if (this.tipo_orden == 5) {
-
-      if(this.dataOptometria.length > 0) {
+      this.optometria.setControl("tipo_orden", new FormControl(this.tipo_orden));
+      
+      if(this.dataOptometria.length > 0 && isEditing === undefined) {
         this.warnSwal.fire();
         return;
       }
-
-      this.optometria.setControl("tipo_orden", new FormControl(this.tipo_orden));
-
-      this.dataOptometria.push(this.optometria.value);
-  
+      
+      if(isEditing !== undefined) {
+        this.dataOptometria[isEditing] = this.optometria.value
+        this.editando[this.tipo_orden] = undefined;
+      } else {
+        this.dataOptometria.push(this.optometria.value);
+      }
+        
       this.optometrias.data = this.dataOptometria;
       this.orden_seleccionada = 2;
 
@@ -255,11 +273,24 @@ export class OrdenesMedicasComponent implements OnInit {
   }
 
   historialDocumentos() {
-    this.dialog.open(HcAfiliadoComponent);
+    this.dialog.open(HcAfiliadoComponent, {
+      width: "60%",
+      data: {tipo_orden: this.tipo_orden}
+    });
   }
 
-  editarOrden(el: any) {
-    this.procedimiento.patchValue(el);
+  editarOrden(contenido: any, pos:number) {
+    const tipo_orden:number = contenido.tipo_orden;
+    this.tipo_orden = tipo_orden;
+    this.editando[tipo_orden] = pos;
+    
+    if(tipo_orden < 4) {
+      this.procedimiento.patchValue(contenido);
+    } else if (tipo_orden == 4) {
+      this.medicamento.patchValue(contenido);
+    } else if (tipo_orden == 5) {
+      this.optometria.patchValue(contenido);
+    }
   }
 
   guardarOrdenesMedicas(): IHistClinPorDocExt {

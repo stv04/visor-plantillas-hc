@@ -9,7 +9,7 @@
             </div>
 
             <ul class="nav nav-tabs mb-3" id="formatos-tab" role="tablist" style="height: 38px;">
-                <li class="nav-item active" role="presentation" id="formatoAtencion-item">
+                <li class="nav-item active" role="presentation">
                   <a class="nav-link" id="formatos-atencion-tab" data-toggle="pill" href="#formatos-atencion" role="tab" aria-controls="formatos-atencion" aria-selected="true">Formato de atención</a>
                 </li>
 
@@ -99,3 +99,17 @@
     </div>
 </div>
 
+<!--*** NOTIFICACIONES ***-->
+<swal
+  #errorSwal
+  title="Error al guardar"
+  icon="error"
+>
+</swal>
+
+<swal
+  #swalFinalizado
+  title="Se ha guardado la historia clínica"
+  icon="success"
+>
+</swal>

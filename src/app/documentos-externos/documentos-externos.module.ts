@@ -8,6 +8,7 @@ import { ConsentimientosInformadosComponent } from './components/consentimientos
 import { HcAfiliadoComponent } from './modals/hc-afiliado/hc-afiliado.component';
 import { SweetAlert2Module } from '@sweetalert2/ngx-sweetalert2';
 import { DatePipe } from '@angular/common';
+import { CargarAfiliadoDirective } from './directivas/cargar-afiliado.directive';
 
 
 
@@ -17,6 +18,7 @@ import { DatePipe } from '@angular/common';
     OrdenesMedicasComponent,
     ConsentimientosInformadosComponent,
     HcAfiliadoComponent,
+    CargarAfiliadoDirective,
   ],
   imports: [
     MaterialModule,

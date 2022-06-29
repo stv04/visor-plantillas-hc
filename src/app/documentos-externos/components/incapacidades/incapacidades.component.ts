@@ -15,7 +15,7 @@ const ID_INCAPACIDADES: number = 3;
 export class IncapacidadesComponent implements OnInit {
   private fechaActual = this.dp.transform(new Date().getTime(), "yyyy-MM-dd");
 
-  private isDisabled:boolean = true;
+  private dias_acumulados:number = Math.round(Math.random() * 5);
   public incapacidadesForm:FormGroup = this.fb.group({
     tipo_doc: ["", Validators.required],
     identificacion: ["", Validators.required],
@@ -37,7 +37,7 @@ export class IncapacidadesComponent implements OnInit {
     diagnostico: [, Validators.required],
     fecha_inicial: [this.fechaActual],
     fecha_final: [this.fechaActual],
-    dias_incapacidad: [0, Validators.required],
+    dias_incapacidad: [1, Validators.required],
     opcion_procedimientos: [],
 
     check_convalidacion: [],
@@ -248,36 +248,41 @@ export class IncapacidadesComponent implements OnInit {
   }
 
   get formulario() {
-    const prevDis = this.isDisabled;
     // this.incapacidadesForm.enable();
     const valoresInhabilitados = this.incapacidadesFormDisabled.value;
     console.log(valoresInhabilitados);
     // this.incapacidadesFormDisabled.enable();
     const values = Object.assign(valoresInhabilitados, this.incapacidadesForm.value);
-    this.isDisabled = prevDis;
 
     return values
   }
 
   calculoFecha():void {
-    const calcular = (f:string, i:string):void => {
-      const dividendo = 1000 * 60 * 60 * 24;
+    const diasEnMilli = 1000 * 60 * 60 * 24;
+    const fechaICtrl = this.incapacidadesForm.get("fecha_inicial");
+    const fechaFCtrl = this.incapacidadesForm.get("fecha_final");
 
-      const diferencia = new Date(f).getTime() - new Date(i).getTime();
+    const diasIncCtrl = this.incapacidadesForm.get("dias_incapacidad");
+    const diasAcumCtrl = this.incapacidadesForm.get("dias_acumulados");
+    const diasInc = diasIncCtrl?.value;
 
-      this.incapacidadesForm.get("dias_incapacidad")?.setValue(diferencia / dividendo);
+    if(this.fechaActual) {
+      this.cargarCampoInhabilitar("fecha_inicial", this.fechaActual);
+      this.cargarCampoInhabilitar("fecha_final", this.fechaActual);
     }
 
-    this.incapacidadesForm.get("fecha_final")?.valueChanges.subscribe(fechaF => {
-      const fechaI = this.incapacidadesForm.get("fecha_inicial")?.value;
-      calcular(fechaF, fechaI);
-    });
+    const calcular = (value:number):void => {
+      if(!value) value = 1;
+      const fechaI = fechaICtrl?.value;
+      const newFechaF = new Date(fechaI).getTime() + (diasEnMilli * value);
+
+      fechaFCtrl?.setValue(this.dp.transform(newFechaF, "yyyy-MM-dd"));
+      diasAcumCtrl?.setValue(this.dias_acumulados + value);
+    }
     
-    this.incapacidadesForm.get("fecha_inicial")?.valueChanges.subscribe(fechaI => {
-      const fechaF = this.incapacidadesForm.get("fecha_final")?.value;
-      calcular(fechaF, fechaI);
-    });
+    diasIncCtrl?.valueChanges.subscribe(calcular);
   
+    calcular(diasInc);
   }
 
   preCargarInformacionAfiliado() {
@@ -310,13 +315,17 @@ export class IncapacidadesComponent implements OnInit {
   
   async cargarInfoAfil(nameEl:string, campo:string): Promise<void> {
     const consulta = await this.afilConfServ.obtenerServicios(campo);
+    this.cargarCampoInhabilitar(nameEl, consulta);
+  }
+
+  cargarCampoInhabilitar(nameEl: string, value: string) {
     const control = this.incapacidadesForm.get(nameEl);
     
-    if(!consulta || !control) return;
+    if(!value || !control) return;
 
-    control.patchValue(consulta);
+    control.patchValue(value);
     control.disable();
 
-    this.incapacidadesFormDisabled.setControl(nameEl, new FormControl(consulta));
+    this.incapacidadesFormDisabled.setControl(nameEl, new FormControl(value));
   }
 }

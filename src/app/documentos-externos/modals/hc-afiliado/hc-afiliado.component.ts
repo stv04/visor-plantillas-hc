@@ -1,5 +1,7 @@
-import { Component, Inject, Input, OnInit } from '@angular/core';
+import { Component, Inject, Input, OnInit, ViewChild } from '@angular/core';
 import { MAT_DIALOG_DATA } from '@angular/material/dialog';
+import { MatSort } from '@angular/material/sort';
+import { MatTableDataSource } from '@angular/material/table';
 import { AfiliadosService } from 'src/app/services/afiliados.service';
 import { FormulariosService } from 'src/app/services/formularios.service';
 
@@ -10,7 +12,8 @@ import { FormulariosService } from 'src/app/services/formularios.service';
 })
 export class HcAfiliadoComponent implements OnInit {
   public cargando:boolean = true;
-  public historialPorTipo: any[] = [];
+  public historial:any[] = [];
+  public historialPorTipo: MatTableDataSource<any> = new MatTableDataSource();
   public columns: string[];
 
   private colGenerica:string[] = [
@@ -19,14 +22,15 @@ export class HcAfiliadoComponent implements OnInit {
     "observaciones",
     "cantidad",
     "especialidad",
-    "historia"
+    "historia", 
+    "fecha"
   ];
 
   private colMedicamentos: string[] = [
-    "tipo_orden", "medicamento", "observaciones", "cantidad", "historia"
+    "tipo_orden", "medicamento", "observaciones", "cantidad", "historia", "fecha"
   ]
 
-  private colOpt: string[] = ["tipo_orden", "historia"];
+  private colOpt: string[] = ["tipo_orden", "historia", "fecha"];
   public colPorTipoOrden:string[][] = [
     this.colGenerica, this.colGenerica, this.colGenerica, this.colGenerica,
     this.colMedicamentos, this.colOpt
@@ -47,12 +51,23 @@ export class HcAfiliadoComponent implements OnInit {
 
   ngOnInit(): void {
     this.obetenerHistorial();
+    this.historialPorTipo.sort = this.sort;
+  }
+
+  @ViewChild(MatSort) sort!: MatSort;
+
+  obtenerFecha(fech:string):Date {
+    const fecha = new Date(fech.trim());
+    console.log(fecha);
+    return fecha
   }
 
   obetenerHistorial() {
     const idAfil:number = this.afilServ.afiliado.nU_IDAFILIADO_AFIL;
     this.formServ.getHcPorDocExtAfil(idAfil, 1).subscribe(historial => {
-      this.historialPorTipo = historial.filter(hist => hist.tipo_orden === this.data.tipo_orden);
+      this.historial = historial.filter(hist => hist.tipo_orden === this.data.tipo_orden);
+      this.historialPorTipo.data = this.historial;
+      
       this.cargando = false;
     });
   }

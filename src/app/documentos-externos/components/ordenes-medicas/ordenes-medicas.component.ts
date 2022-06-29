@@ -31,12 +31,13 @@ export class OrdenesMedicasComponent implements OnInit {
     tipo_orden: [0],
     medicamento: ["", Validators.required],
     procedimiento: null,
-    cantidad: 1,
+    cantidad: null,
     titulo: [""],
     presentacion: [11, Validators.required],
     dosis: [0, Validators.required],
     frecuencia: [0, Validators.required],
     tiempo: ["", Validators.required],
+    periodo: [, Validators.required],
     via: [11, Validators.required],
     concentracion: [""],
     observaciones: ""
@@ -209,6 +210,32 @@ export class OrdenesMedicasComponent implements OnInit {
 
   get titulo() {
     return this.tipo_ordenes[this.tipo_orden];
+  }
+
+  // fórmula para catidad de medicamentos: Dosis*Periodo / (Frecuencia * conversor)
+  get cantidadMedicamentos():number {
+    const med = this.medicamento;
+    const dosis:number = med.get("dosis")?.value;
+    const periodo:number = med.get("periodo")?.value;
+    const frecuencia:number = med.get("frecuencia")?.value;
+    const tiempo:number = med.get("tiempo")?.value;
+
+    let conversor:number;
+
+    switch(tiempo) {
+      case 1:
+        conversor = 1 / (24 * 60);
+        break;
+      case 2:
+        conversor = 1 / 24;
+        break;
+
+      default:
+        conversor = 1;
+        break;
+    }
+
+    return Math.floor(dosis * periodo / (frecuencia * conversor));
   }
 
   obtenerTipoOrden(orden: number): string {

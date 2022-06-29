@@ -144,7 +144,7 @@ export class MPlantillasHcComponent implements OnInit {
           if(conversion) {
             const consulta:number = values[i];
             const datosMaestros = await lastValueFrom(this.dataMastServ.dataMaster(conversion));
-            values[i] = datosMaestros[consulta][1];
+            values[i] = datosMaestros[consulta][0];
           }
 
           i++

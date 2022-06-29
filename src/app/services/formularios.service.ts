@@ -1,3 +1,4 @@
+import { DatePipe } from '@angular/common';
 import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { BehaviorSubject, map, Observable } from 'rxjs';
@@ -14,7 +15,7 @@ export class FormulariosService {
   private pathForm:string = "Formularios";
   private pathHistClin:string = "HistoriaClinica";
   private pathDocXForm:string = this.pathForm + "/relacionDocumento";
-  private pathHCPorDocExtAfil:string = this.pathHistClin + "/ObtenerHcPorDocExtDeAfiliado";
+  private pathHCPorDocExtAfil:string = this.pathHistClin + "/ObtenerHistorialClinicoDeAfiliado";
   private headAppJson = new HttpHeaders({
     "Content-Type": "application/json"
   });
@@ -24,7 +25,7 @@ export class FormulariosService {
   private historialClinico:Array<any> = [];
 
   public idAfiliado:number = 0;
-  constructor(private http: HttpClient, private afilServ: AfiliadosService) { }
+  constructor(private http: HttpClient, private dp: DatePipe) { }
 
   getAll():Observable<IMostradorFormulario[]> {
     if(this.mostrarioForms.length) 
@@ -91,18 +92,28 @@ export class FormulariosService {
 
     return this.http.get(this.endpoint + this.pathHCPorDocExtAfil + "/" + idAfil, {params})
     .pipe(map(res => {
-      (<any[]>res).forEach(doc => {
+      (<any[]>res)
+      .forEach(doc => {
         const informacion = doc.tX_INFODILIGENCIADA_HCXDE;
-        const idHC = doc.nU_IDHISTORIACLINICA_HCXDE
-        console.log(doc);
+        const idHC = doc.nU_IDHISTORIACLINICA_HCXDE;
+        const fecha = this.dp.transform(doc.fE_FECHA_HC, "short");
+
         if(!/^[\[|\{]/.test(informacion)) return;
+
         const jsonInfo = JSON.parse(informacion);
 
-        jsonInfo.map((info:any) => {
+        jsonInfo
+        .map((info:any) => {
           info.historia = idHC;
+          info.fecha = fecha;
           return info;
         })
+        
         this.historialClinico = this.historialClinico.concat(jsonInfo);
+      });
+
+      this.historialClinico.sort((a, b) => {
+        return new Date(b.fecha).getTime() - new Date(a.fecha).getTime();
       });
 
       return this.historialClinico;

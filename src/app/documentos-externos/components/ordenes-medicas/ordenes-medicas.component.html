@@ -98,20 +98,20 @@
                     <h3 class="col-md-12"><b>Adminitración</b></h3>
                     <mat-form-field class="col-md-2">
                         <mat-label>Dosis</mat-label>
-                        <input matInput name="dosis" formControlName="dosis">
+                        <input type="number" matInput name="dosis" formControlName="dosis">
                     </mat-form-field>
                     
                     <mat-form-field class="col-md-2">
                         <mat-label>Frecuencia</mat-label>
-                        <input matInput name="frecuencia" formControlName="frecuencia">
+                        <input type="number" matInput name="frecuencia" formControlName="frecuencia">
                     </mat-form-field>
                     
                     <mat-form-field class="col-md-2">
                         <mat-label>Tiempo</mat-label>
                         <mat-select name="tiempo" formControlName="tiempo">
-                            <mat-option value="1">Minutos</mat-option>
-                            <mat-option value="2">Horas</mat-option>
-                            <mat-option value="3">Días</mat-option>
+                            <mat-option [value]="1">Minutos</mat-option>
+                            <mat-option [value]="2">Horas</mat-option>
+                            <mat-option [value]="3">Días</mat-option>
                         </mat-select>
                     </mat-form-field>
                     
@@ -125,14 +125,14 @@
 
                 <div class="row">
                     <mat-form-field class="col-md-3">
-                        <mat-label>Peridodo</mat-label>
-                        <input matInput type="number">
+                        <mat-label>Periodo</mat-label>
+                        <input type="number" matInput type="number" formControlName="periodo">
                         <mat-icon class="icono-ayuda" matSuffix mat-icon-button matTooltip="periodo de duración del tratamiento en días"
                         matTooltipPosition="above">help</mat-icon>
                     </mat-form-field>
                     <mat-form-field class="col-md-3">
                         <mat-label>cantidad</mat-label>
-                        <input matInput type="number" formControlName="cantidad">
+                        <input matInput type="number" formControlName="cantidad" [value]="cantidadMedicamentos">
                     </mat-form-field>
                     <mat-form-field class="col-md-6">
                         <mat-label>Observaciones</mat-label>

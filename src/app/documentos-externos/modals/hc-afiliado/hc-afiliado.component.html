@@ -1,9 +1,9 @@
 <button mat-icon-button mat-dialog-close class="float-right" tabindex="-1"><mat-icon>close</mat-icon></button>
 <h3 mat-dialog-title>Ordenado anteriormente</h3>
 <div mat-dialog-content>
-    <table *ngIf="historialPorTipo.length" mat-table [dataSource]="historialPorTipo" [style.width]="'100%'">
+    <table *ngIf="historial.length" mat-table [dataSource]="historialPorTipo" matSort [style.width]="'100%'">
         <ng-container matColumnDef="tipo_orden">
-            <th mat-header-cell *matHeaderCellDef> Tipo orden </th>
+            <th mat-header-cell *matHeaderCellDef mat-sort-header> Tipo orden </th>
             <td mat-cell *matCellDef="let element"> {{obtenerTipoOrden(element.tipo_orden)}} </td>
         </ng-container>
         
@@ -12,13 +12,17 @@
         <mat-text-column name="cantidad"></mat-text-column>
         <mat-text-column name="especialidad"></mat-text-column>
         <mat-text-column name="medicamento"></mat-text-column>
-        <mat-text-column name="historia"></mat-text-column>
+        <mat-text-column name="historia">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header> Historia </th>
+            <td mat-cell *matCellDef="let element"> {{obtenerTipoOrden(element.historia)}} </td>
+        </mat-text-column>
+        <mat-text-column name="fecha"></mat-text-column>
 
         <tr mat-header-row *matHeaderRowDef="columns"></tr>
         <tr mat-row *matRowDef="let row; columns: columns"></tr>
     </table>
 
-    <h4 *ngIf="!cargando && !historialPorTipo.length">Sin historial previo</h4>
+    <h4 *ngIf="!cargando && !historial.length">Sin historial previo</h4>
 
     <mat-progress-bar *ngIf="cargando" mode='indeterminate'></mat-progress-bar>
     

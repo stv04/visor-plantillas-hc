@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
-import { AfiliadosService } from '../services/afiliados.service';
+import { ActivatedRoute } from '@angular/router';
+import { AfiliadosService } from '../../../services/afiliados.service';
 
 @Component({
   selector: 'app-header',
@@ -15,9 +16,15 @@ export class HeaderComponent implements OnInit {
     tX_NOMIDENTI_AFIL: "",
     codigo: ""
   }
-  constructor(private afilServ: AfiliadosService) { }
+  constructor(
+    private afilServ: AfiliadosService,
+    private route: ActivatedRoute
+  ) { }
 
   ngOnInit(): void {
+    const idAfil = this.route.snapshot.paramMap.get("idAfil");
+    
+    if(idAfil) this.getAfil(idAfil);
   }
 
   toggleHeaderHeight():void {

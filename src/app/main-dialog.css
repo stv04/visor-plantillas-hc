@@ -1,0 +1,48 @@
+.dialog-title{
+  display: inline;
+}
+ 
+.icon-title {
+  font-weight: 400 !important;
+}
+ 
+.close-button{
+  border-radius: 50%;
+  width: 25px;
+  height: 25px;
+  padding: 0;
+  padding-top: 4px;
+  background-color: white;
+}
+ 
+.close-button > mat-icon{
+  font-size: 16px;
+  height: 16px;
+  width: 16px;
+  vertical-align: top;
+}
+
+mat-dialog-actions {
+  display: flex;
+  justify-content: space-around;
+  margin: 0px -24px -24px -24px;
+}
+
+/* :host {
+    display: block;
+    background: #fff;
+    border-radius: 8px;
+    padding: 16px;
+    max-width: 500px;
+    animation: custom-dialog-enter 1s ease;
+  }
+  
+  @keyframes custom-dialog-enter {
+    from {
+      transform: scale(0) rotate(360deg);
+    }
+  
+    to {
+      transform: none;
+    }
+  } */

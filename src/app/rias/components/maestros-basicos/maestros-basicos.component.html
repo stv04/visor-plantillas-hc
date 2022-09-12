@@ -1,0 +1,98 @@
+<div [style.height]="'60px'">
+    <div class="float-right d-flex flex-row options-blue" [style.borderRadius]="'0 0 0 5px'">
+        
+        <span class="option-action icon-txt d-flex flex-column" (click)="guardarGrupoEtareo()">
+            <mat-icon>save</mat-icon>
+            <small>Guardar</small>
+        </span>
+
+        <span class="option-action icon-txt d-flex flex-column">
+            <mat-icon>logout</mat-icon>
+            <small>Salir</small>
+        </span>
+    </div>
+</div>
+
+<div class="contenedor">
+    <h2 class="title mb-5">Parametrizar maestros básicos</h2>
+    
+    <div class="contenido">
+        <div class="row">
+            <div class="col-12 title">Parametrizar Items Grupos Etareos</div>
+            <div class="col-12"><button (click)="abrirCrearRias()" mat-button class="button float-right">Agregar Rias</button></div>
+        </div>
+        <form [formGroup]="form" class="row mt-2">
+
+            <mat-form-field class="col-md-3" >
+                <mat-label>Nombre del item</mat-label>
+                <input type="text" matInput formControlName="tX_NOMBRE_GRET">
+            </mat-form-field>
+            <mat-form-field class="col-md-3">
+                <mat-label>Sexo</mat-label>
+                <mat-select formControlName="tX_GENERO_GRET">
+                    <mat-option value="masculino">Masculino</mat-option>
+                    <mat-option value="femenino">Femenino</mat-option>
+                </mat-select>
+            </mat-form-field>
+
+            <div class="col-3 d-flex flex-column">
+                <label>Medida edad</label>
+                <mat-radio-group formControlName="nU_UNIDADMEDIDA_GRET">
+                    <mat-radio-button class="ml-2" *ngFor="let t of ['Días', 'Meses', 'Años']; let i = index" [value]="i">{{t}}</mat-radio-button>
+                </mat-radio-group>
+            </div>
+    
+            <div class="col-3 d-flex justify-content-around">
+                <mat-form-field style="width: 48%;">
+                    <mat-label>Edad inicial</mat-label>
+                    <input type="number" matInput formControlName="nU_EDADINICIAL_GRET">
+                </mat-form-field>
+                
+                <mat-form-field style="width: 48%;">
+                    <mat-label>Edad final</mat-label>
+                    <input type="number" matInput formControlName="nU_EDADFINAL_GRET">
+                </mat-form-field>
+            </div>
+
+            <div class="col-md-4 d-flex">
+                <mat-label>Automático</mat-label>
+                <mat-slide-toggle class="ml-2" 
+                formControlName="tX_AUTOMATICO_GRET"
+                >
+                    {{form.get("tX_AUTOMATICO_GRET")?.value ? 'Si' : "No"}}
+                </mat-slide-toggle>
+                
+            </div>
+
+            
+        </form>
+
+        <div class="contenedor-tabla">
+            <table mat-table [dataSource]="dataSource" matSort class="table-striped mat-elevation-z3 w-100">
+                    
+                <ng-container [matColumnDef]="c.campo" *ngFor="let c of colsDefinition">
+                    <th class="px-2" mat-header-cell *matHeaderCellDef mat-sort-header>{{c.titulo}}</th>
+                    <td class="px-2" mat-cell *matCellDef="let element">{{element[c.campo]}}</td>
+                </ng-container>
+
+                <ng-container matColumnDef="edadInicial">
+                    <th class="px-2" mat-header-cell *matHeaderCellDef mat-sort-header>Edad inicial</th>
+                    <td class="px-2" mat-cell *matCellDef="let element">{{renderEdades(element.nU_UNIDADMEDIDA_GRET, element.nU_EDADINICIAL_GRET)}}</td>
+                </ng-container>
+                
+                <ng-container matColumnDef="edadFinal">
+                    <th class="px-2" mat-header-cell *matHeaderCellDef mat-sort-header>Edad final</th>
+                    <td class="px-2" mat-cell *matCellDef="let element">{{renderEdades(element.nU_UNIDADMEDIDA_GRET, element.nU_EDADFINAL_GRET)}}</td>
+                </ng-container>
+                
+              
+                <tr mat-header-row *matHeaderRowDef="cols; sticky: true"></tr>
+                <tr mat-row *matRowDef="let row; columns: cols;"></tr>
+            </table>
+        
+            <mat-card *ngIf="!dataSource.data.length">
+                <h5 class="text-center">Sin datos para mostrar</h5>
+            </mat-card>
+        </div>
+    </div>
+</div>

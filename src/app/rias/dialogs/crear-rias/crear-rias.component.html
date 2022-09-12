@@ -1,0 +1,97 @@
+<div mat-dialog-title class="dialog-title">
+    <div class="row pr-3 pl-3  ">
+      <i class="material-icons icon-title title mr-4 mt-auto mb-auto">attach_file</i>
+      <p class="mt-auto mb-auto ml-2 title"> Parametrizar Rias </p>
+      <!-- <h6 class="title col-12 mt-4 mb-0"></h6> -->
+      <button class="close-button  ml-auto" [mat-dialog-close]="false">
+        <mat-icon>close</mat-icon>
+      </button>
+    </div>
+</div>
+
+<!-- <ng-template #formTemplate></ng-template> -->
+
+<mat-dialog-content>
+    <form class="row" [formGroup]="formulario(0)">
+        <mat-form-field class="col-md-4">
+            <mat-label>Tipo de atención</mat-label>
+            <input type="text" matInput formControlName="tX_TIPOATENCION_RIAS">
+        </mat-form-field>
+        <mat-form-field class="col-md-4">
+            <mat-label>Atención</mat-label>
+            <input type="text" matInput formControlName="tX_ATENCION_RIAS">
+        </mat-form-field>
+        <mat-form-field class="col-md-4">
+            <mat-label>Tipo Rias</mat-label>
+            <mat-select formControlName="nU_PK_TIPRIA">
+                <mat-option [value]="1">Primer tipo</mat-option>
+                <mat-option [value]="2">segundo tipo</mat-option>
+            </mat-select>
+        </mat-form-field>
+
+        <div class="col-12">
+            <button mat-button class="button" (click)="guardarRias(0)">Agregar rias principal</button>
+        </div>
+
+    </form>
+
+    <mat-form-field class="col-12 mt-3">
+        <mat-label>Filtrar Niveles</mat-label>
+        <input type="text" matInput [(ngModel)]="filtrador" (change)="filtrarRias()">
+    </mat-form-field>
+
+    <mat-tree [dataSource]="listaRiasSrc" [treeControl]="treeControl">
+        <mat-tree-node *matTreeNodeDef="let node" matTreeNodePadding>
+            <!-- use a disabled button to provide padding for tree leaf -->
+            <button mat-icon-button disabled></button>
+            {{node.name}}
+            <button mat-icon-button (click)="addNewRias(node)">
+                <mat-icon>add</mat-icon>
+            </button>
+        </mat-tree-node>
+
+        <mat-tree-node *matTreeNodeDef="let node; when: creatingContent" matTreeNodePadding>
+            <button mat-icon-button disabled></button>
+            <div *ngIf="node.idxForm">
+                <form class="row" [formGroup]="formulario(node.idxForm)">
+                    <mat-form-field class="col-md-4">
+                        <mat-label>Tipo de atención</mat-label>
+                        <input type="text" matInput formControlName="tX_TIPOATENCION_RIAS">
+                    </mat-form-field>
+                    <mat-form-field class="col-md-4">
+                        <mat-label>Atención</mat-label>
+                        <input type="text" matInput formControlName="tX_ATENCION_RIAS">
+                    </mat-form-field>
+                    <mat-form-field class="col-md-4">
+                        <mat-label>Tipo Rias</mat-label>
+                        <mat-select formControlName="nU_PK_TIPRIA">
+                            <mat-option [value]="1">Primer tipo</mat-option>
+                            <mat-option [value]="2">segundo tipo</mat-option>
+                        </mat-select>
+                    </mat-form-field>
+            
+                    <div class="col-12">
+                        <button mat-button class="button" (click)="guardarRias(node.idxForm)">Agregar rias</button>
+                    </div>
+            
+                </form>
+            </div>
+            <!-- <button mat-button (click)="saveNode(node, itemValue.value)">Save</button> -->
+        </mat-tree-node>
+
+        <mat-tree-node *matTreeNodeDef="let node; when: hasChild" matTreeNodePadding>
+            <button mat-icon-button matTreeNodeToggle>
+                <mat-icon>{{treeControl.isExpanded(node) ? "expand_more" : "chevron_right"}}</mat-icon>
+            </button>
+            {{node.name}}
+            <button mat-icon-button (click)="addNewRias(node)">
+                <mat-icon>add</mat-icon>
+            </button>
+        </mat-tree-node>
+    </mat-tree>
+</mat-dialog-content>
+
+
+<mat-dialog-actions class="options-blue d-flex justify-content-around" >    
+    <button mat-stroked-button class="border-accent my-4" color="accent" [mat-dialog-close]="false">Cancelar</button>
+</mat-dialog-actions>

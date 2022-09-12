@@ -4,7 +4,7 @@ import { HttpClientModule } from '@angular/common/http';
 
 import { AppComponent } from './app.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { HeaderComponent } from './header/header.component';
+import { HeaderComponent } from './historia-clinica/components/header/header.component';
 import { SidebarComponent } from './sidebar/sidebar.component';
 import { ContentComponent } from './content/content.component';
 import { ContainerComponent } from './container/container.component';
@@ -20,11 +20,11 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MenuFlotanteComponent } from './components/menu-flotante/menu-flotante.component';
 import { DocumentosExternosModule } from './documentos-externos/documentos-externos.module';
 import { NgxSummernoteModule } from 'ngx-summernote';
+import { AppRoutingModule } from './app-routing.module';
 
 @NgModule({
   declarations: [
     AppComponent,
-    HeaderComponent,
     SidebarComponent,
     ContentComponent,
     ContainerComponent,
@@ -43,6 +43,7 @@ import { NgxSummernoteModule } from 'ngx-summernote';
     ReactiveFormsModule,
     NgxSummernoteModule,
     SweetAlert2Module.forRoot(),
+    AppRoutingModule,
   ],
   providers: [],
   bootstrap: [AppComponent]

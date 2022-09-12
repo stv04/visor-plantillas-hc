@@ -1,6 +1,17 @@
 .container-hc {
-    height: calc(100% - 60px);
+    height: calc(100%);
     width: 100%;
-    margin-top: 60px;
+    /* margin-top: 60px; */
     position: absolute;
+}
+
+.visor-hc {
+    height: 100%;
+    margin-left: 40px;
+    
+    transition: all .5s ease-out;
+}
+
+.visor-hc.sidebar-open {
+    margin-left: 360px;
 }

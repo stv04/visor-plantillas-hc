@@ -1,6 +1,7 @@
 <div class="main-panel">
     <div class="visor-hc {{sidebarOpen ? 'sidebar-open' : ''}}">
         <mat-card style="height: 100%;">
+            <div class="blur" *ngIf="cargando"></div>
 
             <div class="botones d-flex position-absolute" style="right: 0;">
                 <button mat-button (click)="guardarHistoriaClinica()">
@@ -36,27 +37,28 @@
 
             <div class="tab-content" id="formatos-tabContent" style="height: calc(100% - 54px)">
                 <div class="tab-pane fade h-100 show active" id="formatos-atencion" role="tabpanel" aria-labelledby="formatos-atencion-tab">
-                    <iframe id="iframe-visor" width="100%" height="100%" frameborder="1" #editor></iframe>
+                    <iframe id="iframe-visor" width="100%" height="100%" frameborder="0" #editor></iframe>
                 </div>
 
                 <!-- Ordenes médicas -->
                 <div *ngIf="revisarDocumentoAsociado(1)" class="tab-pane fade h-100 overflow-auto" id="formatos-ordMed" role="tabpanel" aria-labelledby="formatos-ordMed-tab">
-                    <app-ordenes-medicas></app-ordenes-medicas>
+                    <app-ordenes-medicas [lectura]="lectura" [informacion]="informacionDiligenciada(ID_ORDENESMEDICAS)"></app-ordenes-medicas>
                 </div>
                 
                 <!-- Indicaciones de manejo -->
                 <div *ngIf="revisarDocumentoAsociado(2)" class="tab-pane fade h-100 overflow-auto" id="formatos-indManejo" role="tabpanel" aria-labelledby="formatos-indManejo-tab">
-                    <div [ngxSummernote]="config" id="editor-indManejo"></div>
+                    <div [ngxSummernote]="config" id="editor-indManejo" *ngIf="!lectura"></div>
+                    <div [ngxSummernoteView]="indicacionesManejoDiligenciada" *ngIf="lectura"></div>
                 </div>
                 
                 <!-- Incapacidades -->
                 <div *ngIf="revisarDocumentoAsociado(3)" class="tab-pane fade h-100 overflow-auto" id="formatos-incapacidades" role="tabpanel" aria-labelledby="formatos-incapacidades-tab">
-                    <app-incapacidades></app-incapacidades>
+                    <app-incapacidades [lectura]="lectura" [informacion]="informacionDiligenciada(ID_INCAPACIDADES)"></app-incapacidades>
                 </div>
                 
                 <!-- Consentimientos informados -->
                 <div *ngIf="revisarDocumentoAsociado(4)" class="tab-pane fade h-100 overflow-auto" id="formatos-consInf" role="tabpanel" aria-labelledby="formatos-consInf-tab">
-                    <app-consentimientos-informados></app-consentimientos-informados>
+                    <app-consentimientos-informados [lectura]="lectura"></app-consentimientos-informados>
                 </div>
             </div>
               

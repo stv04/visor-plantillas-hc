@@ -1,10 +1,10 @@
 .header {
     height: 60px;
     width: 100%;
-    position: absolute;
-    top: 0;
-    box-shadow: 0 0 5px 0 black;
-    z-index: 3;
+    /* position: absolute; */
+    /* top: 0; */
+    /* box-shadow: 0 0 5px 0 black; */
+    /* z-index: 3; */
     transition: all 500ms ease-in;
     overflow: hidden;
     background-color: white

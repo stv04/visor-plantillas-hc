@@ -33,20 +33,20 @@ export class MPlantillasHcComponent implements OnInit {
   }
 
   selectFormulario(id:number) {
+    this.dialog.closeAll();
     if(this.afilServ.afiliado) {
       this.formulariosService.idAfiliado = this.afilServ.afiliado.nU_IDAFILIADO_AFIL;
     }
 
     this.formulariosService.get(id).subscribe(observer => {
-      this.dialog.closeAll();
       this.renderFormulario(observer);
     });
   }
 
-  async renderFormulario(formulario: IFormulario) {
+  async renderFormularioOld(formulario: IFormulario) {
     let html = formulario.tX_HTML_FORM;
     const css = formulario.tX_CSS_FORM;
-    const id = formulario.nU_IDFORMULARIO_FORM;
+    const idForm = formulario.nU_IDFORMULARIO_FORM;
     const js = formulario.tX_JS_FORM;
     const titulo = formulario.tX_NOMBREFORMULARIO_FORM;
 
@@ -106,9 +106,26 @@ export class MPlantillasHcComponent implements OnInit {
       });
   
       const url = URL.createObjectURL(blob);
-      this.formulariosService.setForm({url, titulo, id});
+      this.formulariosService.setForm({url, titulo, idForm, lectura: false});
 
     }
+  }
+
+  renderFormulario(formulario: IFormulario) {
+    this.formulariosService.renderFormulario(formulario, this.cargadorDeServicios.bind(this));
+  }
+
+  async cargadorDeServicios(domHtml:Document):Promise<Document> {
+    const elements = domHtml.querySelectorAll<HTMLInputElement>("[data-servicio]");
+    const elementosConServicios:HTMLInputElement[] = [];
+
+    elements.forEach(e => elementosConServicios.push(e));
+
+    for await (const el of elementosConServicios) {
+      if(el) await this.obtenerServicios(el);
+    }
+
+    return domHtml
   }
 
   private async obtenerServicios(el: HTMLInputElement):Promise<any> {
@@ -130,8 +147,9 @@ export class MPlantillasHcComponent implements OnInit {
       const toParser = query.replace(/&quote;/g, "\"");
       const params:IParamsRecibidos = JSON.parse(toParser);
       const campos:ICampos[] = params.campos;
+      const afil = this.afilServ.afiliado as any;
       
-      if(servicio === "afiliados" && this.afilServ.afiliado) {
+      if(servicio === "afiliados" && afil) {
         el.setAttribute("disabled", "true");
         const values = [];
         let i = 0;
@@ -139,7 +157,7 @@ export class MPlantillasHcComponent implements OnInit {
           const title:string = c.titulo;
           const conversion = c.conversion;
 
-          values[i] = this.afilServ.afiliado[title];
+          values[i] = afil[title];
           
           if(conversion) {
             const consulta:number = values[i];

@@ -1,13 +1,29 @@
+export interface IArchivo {
+    tX_BASE64_ARCH: string;
+    nU_IDTIPOARCHIVO_ARCH: number;
+    }
+      
+    
 export interface IAfiliado {
+    cotizante: ICotizante;
+    beneficiario: ICotizante[];
+}
+    
+export interface IDeclaratoriasPorAfiliado {
+    nU_IDDECAFIL_DECLAFIL: number;
+    nU_RESPUESTAPREGUNTA: string;
+}
+    
+export interface ICotizante {
     nU_IDAFILIADO_AFIL: number;
-    nU_IDCOTIZANTE_AFIL: string;
+    nU_IDCOTIZANTE_AFIL: number;
     nU_TIPOSOLICITUD_AFIL: number;
     nU_IDDEPENDENCIA_DM: number;
     nU_TIPOAFILIADO_AFIL: number;
     nU_TELEFONO_AFIL: number;
     nU_EXTENSION_AFIL: number;
-    nU_CELULAR_AFIL: number;
-    nU_CELULARDOS_AFIL: number;
+    nU_CELULAR_AFIL?: any;
+    nU_CELULARDOS_AFIL?: any;
     nU_TELEMERGEN_AFIL: number;
     nU_CELUEMERGEN_AFIL: number;
     nU_DEPAREMERGEN_AFIL: number;
@@ -17,6 +33,7 @@ export interface IAfiliado {
     nU_BARRIOEMERGEN_AFIL: number;
     nU_ESTRATEMERGEN_AFIL: number;
     nU_DOCUMEMERGEN_AFIL: number;
+    nU_DECLARASALUD_AFIL: number;
     nU_PROVISIONAL_AFIL: number;
     nU_IBC_AFIL: number;
     nU_BENEFICIARIOUN_AFIL: number;
@@ -30,14 +47,14 @@ export interface IAfiliado {
     tX_FORMASOLICITUD_AFIL: string;
     tX_EMPLEADOR_AFIL: string;
     tX_SEDEUNAL_DM: string;
-    tX_ORIENTACIONAFIL_AFIL: number;
+    tX_ORIENTACIONAFIL_AFIL: string;
     tX_NOMIDENTI_AFIL: string;
     tX_PRIMAPELLI_AFIL: string;
     tX_SEGAPELLI_AFIL?: any;
     tX_PRIMNOMBRE_AFIL: string;
     tX_SEGNOMBRE_AFIL?: any;
     tX_IDENTIFICACION_AFIL: string;
-    tX_DIRECCION_AFIL?: any;
+    tX_DIRECCION_AFIL: string;
     tX_COMPLDIRE_AFIL: string;
     tX_VEREDA_AFIL: string;
     tX_CORREOUNAL_AFIL: string;
@@ -50,10 +67,10 @@ export interface IAfiliado {
     tX_CARGOACTUAL_AFIL: string;
     tX_DEDICACION_AFIL: string;
     tX_PASS_AFIL: string;
-    tX_OBSERVACIONESVALIDAR_AFIL?: any;
-    tX_OBSERVACIONESACEPTAR_AFIL?: any;
-    tX_OBSERVACIONESRECHAZAR_AFIL?: any;
-    tX_OBSERVACIONESAPROBAR_AFIL?: any;
+    tX_OBSERVACIONESVALIDAR_AFIL: string;
+    tX_OBSERVACIONESACEPTAR_AFIL: string;
+    tX_OBSERVACIONESRECHAZAR_AFIL: string;
+    tX_OBSERVACIONESAPROBAR_AFIL: string;
     tX_MOTIVORECHAZO_AFIL: number;
     fE_FECHAEXPEDICION_AFIL: Date;
     fE_FECHAVENCIMIENTO_AFIL: Date;
@@ -62,10 +79,10 @@ export interface IAfiliado {
     fE_FECHASOLICITUD_AFIL: Date;
     fE_FECHAINICIOSER_AFIL: Date;
     nU_IDTIPOIDEN_TIPOIDEN: number;
-    nU_IDGENERO_GENEROS: number;
+    nU_IDGENERO_GENEROS: number | string;
     nU_IDNACIONALI_NACIONALI: number;
     nU_IDGRUPOET_GRUPOET: number;
-    nU_IDGRUPOPOBLA_GRUPOPOBL?: any;
+    nU_IDGRUPOPOBLA_GRUPOPOBL: string;
     nU_IDESTACIV_ESTADOCIV: number;
     nU_IDTIPOSANGRE_TIPOSANGRE: number;
     nU_IDRH_RHS: number;
@@ -87,15 +104,11 @@ export interface IAfiliado {
     nU_IDRELACIONBENE_RELACION: number;
     tX_NITEMP_AFIL?: any;
     tX_NOMRAZSOCEMP_AFIL?: any;
-    tX_ADMINEAPB_AFIL?: any;
-    tX_NOMCONEAPB_AFIL?: any;
-    nU_PENSIONADO_AFIL?: any;
-    nU_GRAVEJURA_AFIL?: any;
-    nU_CONSENDATA_AFIL?: any;
-    nU_AUTORIZACION_AFIL?: any;
-    nU_DECLARASALUD_AFIL: number;
-    nU_TIPODEAFIL_AFIL?: any;
-    nU_UPCADICIONAL_AFIL?: any;
-    declaratoriasPorAfiliados?: any;
-    archivos?: any;
+    declaratoriasPorAfiliados: IDeclaratoriasPorAfiliado[];
+    archivos: IArchivo[];
+
+    tX_NOMCONEAPB_AFIL?: number;
+    tX_ADMINEAPB_AFIL?: number;
+    nU_PENSIONADO_AFIL?: number;
+    
 }

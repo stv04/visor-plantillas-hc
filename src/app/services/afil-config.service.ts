@@ -1,11 +1,13 @@
 import { Injectable } from '@angular/core';
 import { lastValueFrom } from 'rxjs';
+import { ICotizante } from '../interfaces/afiliado';
 import { AfiliadosService } from './afiliados.service';
 import { DataMasterService } from './data-master.service';
 
 interface ICampos {
   titulo:string,
-  conversion?:string,
+  conversion?:string|any[],
+  separador?:string
 }
 
 interface IParamsRecibidos {
@@ -15,6 +17,10 @@ interface IParamsRecibidos {
   campos:ICampos[],
   eval?:string,
   separador?:string
+}
+
+interface ICotizanteEx extends ICotizante {
+  [key:string]: any;
 }
 
 
@@ -43,7 +49,12 @@ export class AfilConfigService {
     id: 3,
     titulo: "nombre_completo",
     nombre: "Nombre completo",
-    campos: [{titulo: "tX_PRIMNOMBRE_AFIL"}, {titulo: "tX_PRIMAPELLI_AFIL"}],
+    campos: [
+      {titulo: "tX_PRIMNOMBRE_AFIL"}, 
+      {titulo: "tX_NOMIDENTI_AFIL"}, 
+      {titulo: "tX_PRIMAPELLI_AFIL"}, 
+      {titulo: "tX_SEGAPELLI_AFIL"}
+    ],
     separador: " "
   }, {
     id: 4,
@@ -92,7 +103,10 @@ export class AfilConfigService {
     titulo: "direccion",
     nombre: "Dirección",
     campos: [
-      {titulo: "tX_DIRECCION_AFIL"}
+      {
+        titulo: "tX_DIRECCION_AFIL",
+        conversion: ["TIPO-DE-VIA-PRINCIPAL", "", "LETRA-DE-VIA", "", "LETRA-DE-VIA", "", "", "LETRA-DE-VIA", "", "", ""]
+      }
     ],
   }, {
     id: 11,
@@ -132,24 +146,24 @@ export class AfilConfigService {
   public async obtenerServicios(tituloEstructura: string):Promise<any> {
     const consulta:IParamsRecibidos | undefined = this.estructuraConversion.find(est => tituloEstructura === est.titulo);
    
-    console.log(consulta);
     if(!consulta) return;
 
     const campos:ICampos[] = consulta.campos;
+    const afil = this.afilServ.afiliado as ICotizanteEx;
     
-    if(this.afilServ.afiliado) {
+    if(afil) {
       const values = [];
       let i = 0;
       for await (let c of campos) {
         const title:string = c.titulo;
         const conversion = c.conversion;
+        const separador:string = c.separador || " ";
 
-        values[i] = this.afilServ.afiliado[title];
+        values[i] = afil[title];
         
         if(conversion) {
-          const consulta:number = values[i];
-          const datosMaestros = await lastValueFrom(this.dataMastServ.dataMaster(conversion));
-          values[i] = datosMaestros[consulta][0];
+          const consulta:number|string = values[i];
+          values[i] = await this.conversorDatosMaestros(conversion, consulta, separador); 
         }
 
         i++
@@ -159,6 +173,31 @@ export class AfilConfigService {
       return value;
     }
     
+  }
+
+  private async conversorDatosMaestros(conversion:string|any[], consulta:number|string, separador:string) {
+    let datosMaestros
+    if(typeof conversion === "string") {
+      datosMaestros = await lastValueFrom(this.dataMastServ.dataMaster(conversion));
+      return datosMaestros[consulta][0];
+    } else {
+      const arrayConv = conversion.map(conv => {
+        if(!conv) return Promise.resolve(conv);
+
+        return lastValueFrom(this.dataMastServ.dataMaster(conv))
+      });
+
+      const consultas:any[] = (<string> consulta).replace(/\[|\]/g, "").split(",");
+      const datosConvertidos = await Promise.all(arrayConv);
+
+      return datosConvertidos.map((d, i) => {
+        const valor = consultas[i];
+        if(valor == -1 || d === null) return "";
+        if(d === "") return valor;
+
+        return d[valor][0];
+      }).join(separador);
+    }
   }
 
   private evaluarValor(valor:string, evaluador:string): string {

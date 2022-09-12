@@ -1,0 +1,79 @@
+<div [style.height]="'60px'">
+    <div class="float-right d-flex flex-row options-blue" [style.borderRadius]="'0 0 0 5px'">
+        
+        <span class="option-action icon-txt d-flex flex-column" (click)="guardarRelacion()">
+            <mat-icon>save</mat-icon>
+            <small>Guardar</small>
+        </span>
+
+        <span class="option-action icon-txt d-flex flex-column">
+            <mat-icon>logout</mat-icon>
+            <small>Salir</small>
+        </span>
+    </div>
+</div>
+
+<div class="contenedor">
+    <h2 class="title mb-5">Asignación de RIAS</h2>
+    
+    <div class="contenido">
+        
+        <mat-accordion multi class="ov">
+            <mat-expansion-panel [disabled]="tieneRias">
+                <mat-expansion-panel-header>
+                    <mat-panel-title>RIAS</mat-panel-title>
+                </mat-expansion-panel-header>
+                <mat-list >
+                    <mat-list-item *ngFor="let rias of listaRias">
+                        <div class="d-flex justify-content-between w-100">
+                            <p>{{rias.tX_ATENCION_RIAS}}</p>
+                            <button mat-icon-button (click)="asociarRias(rias)"><mat-icon>chevron_right</mat-icon></button>
+                        </div>
+                    </mat-list-item>
+                </mat-list>
+            </mat-expansion-panel>
+
+            <mat-expansion-panel [disabled]="tieneEtareo">
+                <mat-expansion-panel-header>
+                    <mat-panel-title>Grupos etareos</mat-panel-title>
+                </mat-expansion-panel-header>
+                <mat-list>
+                    <mat-list-item *ngFor="let et of listaGruposEtareo">
+                        <div class="d-flex justify-content-between w-100">
+                            <p>{{et.tX_NOMBRE_GRET}}</p>
+                            <button mat-icon-button (click)="asociarGrupEt(et)"><mat-icon>chevron_right</mat-icon></button>
+                        
+                        </div>
+                    </mat-list-item>
+                </mat-list>
+            </mat-expansion-panel>
+        </mat-accordion>
+
+        <mat-list class="seleccion list mat-elevation-z2">
+            <mat-list-item *ngFor="let asoc of listaRelaciones">
+                <div class="d-flex justify-content-between w-100">
+                    {{asoc.nombre}}
+                    <button mat-icon-button (click)="eliminarRelacion(asoc.pk, asoc.tipo)"><mat-icon>close</mat-icon></button>
+                </div>
+            </mat-list-item>
+        </mat-list>
+
+        <div class="arbol">
+            <h6 class="title stick">Rias asignadas</h6>
+            <mat-tree [dataSource]="listaRiasSrc" [treeControl]="treeControl" class="mat-elevation-z2">
+                <mat-tree-node *matTreeNodeDef="let node" matTreeNodePadding>
+                    <!-- use a disabled button to provide padding for tree leaf -->
+                    <button mat-icon-button disabled></button>
+                    {{node.name}}
+                </mat-tree-node>
+        
+                <mat-tree-node *matTreeNodeDef="let node; when: hasChild" matTreeNodePadding matTreeNodeToggle>
+                    <button mat-icon-button >
+                        <mat-icon>{{treeControl.isExpanded(node) ? "expand_more" : "chevron_right"}}</mat-icon>
+                    </button>
+                    {{node.name}}
+                </mat-tree-node>
+            </mat-tree>
+        </div>
+    </div>
+</div>

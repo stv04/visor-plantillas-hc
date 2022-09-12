@@ -2,5 +2,8 @@
     <app-sidebar [open]="sidebarIsOpen" 
     (toggleSidebarEvent)="toggleSidebar($event)"
     ></app-sidebar>
-    <app-content [sidebarOpen]="sidebarIsOpen" ></app-content>
+    <div class="visor-hc {{sidebarIsOpen ? 'sidebar-open' : ''}}">
+        <router-outlet ></router-outlet>
+    </div>
+    <!-- <router-outlet  ></router-outlet> -->
 </div>

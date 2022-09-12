@@ -5,3 +5,9 @@ export interface IHistClinPorDocExt {
     tX_INFODILIGENCIADA_HCXDE: string;
     nU_ESTADO_HCXDE: number;
 }
+
+export interface ITempAudioria {
+    nU_PK_TPAUDHC: number;
+    nU_IDFORMULARIO_FORM: number;
+    nU_ESTADOACTUAL_TPAUDHC: number;
+}

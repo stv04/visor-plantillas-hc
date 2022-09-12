@@ -9,14 +9,23 @@
     box-sizing: border-box;
 }
 
-html, body { height: 100%; }
-body { 
-    margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif;
-    background-image: url("assets/img/fondo.jpeg");
+body {
+    /* background-image: url("src\app\images\bg_login.jpg"); */
+    background-color: #f4f4f4;
     background-repeat: no-repeat;
+    background-position: center;
     background-size: cover;
-    /* overflow: hidden; */
+    top:0px;
+    left:0px;
+    width: 100%;
+    height: 100%;
+  
+    overflow-y: hidden;
+  
+    margin: 0;
+    font-family: 'Poppins','Helvetica','Arial',sans-serif;
 }
+
 *::-webkit-scrollbar {
     width: 9px;
     height: 8px;
@@ -47,3 +56,14 @@ body {
     background-color: transparent;
     -webkit-text-decoration-skip: objects;
 } */
+
+.contenedor {
+    width: 95%;
+    margin: auto;
+}
+
+.contenido {
+    padding: .8em;
+    height: calc(100vh - 180px);
+    background-color: white;
+}

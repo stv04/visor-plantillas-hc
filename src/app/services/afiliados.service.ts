@@ -1,14 +1,17 @@
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Observable } from 'rxjs';
+import { BehaviorSubject, Observable } from 'rxjs';
+import { ICotizante } from '../interfaces/afiliado';
 
 @Injectable({
   providedIn: 'root'
 })
 export class AfiliadosService {
+  private readonly endpoint:string = "http://181.129.245.90:8165";
 
-  public readonly endpoint:string = "http://181.129.245.90:8165";
-  public afiliado:any = {};
+  public afiliado!:ICotizante;
+  public idAfiliado:number = 0;
+  public afiliadoObserver:BehaviorSubject<any> = new BehaviorSubject({})
 
   constructor(private http:HttpClient) { }
 
@@ -24,5 +27,7 @@ export class AfiliadosService {
 
   setAfiliado(afil:any) {
     this.afiliado = afil
+    this.idAfiliado = this.afiliado.nU_IDAFILIADO_AFIL;
+    this.afiliadoObserver.next(afil);
   }
 }

@@ -1,0 +1,551 @@
+<div class="container-fluid mt-3">
+    <h3>Consentimientos infomrados</h3>
+    <div class="row">
+        <form class="col-md-4">
+            <mat-form-field class="m-0">
+                <mat-select name="consentimientos" [(ngModel)]="consentimiento.tipo_consentimiento">
+                    <mat-option *ngFor="let opt of consentimientos; let i = index" [value]="opt.id">
+                        {{opt.value}}
+                    </mat-option>
+                </mat-select>
+            </mat-form-field>
+                  
+            <button mat-raised-button class="mt-2 btn-block btn-hover" color="primary" (click)="autorizar()">Autorizar</button>
+
+            <mat-list role="list" class="mt-3">
+                <mat-list-item role="listitem" *ngFor="let consen of consentimientosSeleccionados">
+                    {{consen.value}}
+                    <button mat-icon-button>
+                        <mat-icon (click)="quitarConsentimiento(consen.id)">close</mat-icon>
+                    </button>
+                </mat-list-item>
+            </mat-list>
+        </form>
+        
+        <div class="col-md-8">
+            <div class="perfiles">
+                <div *ngIf="consentimientoSeleccionado(339)">
+                    <div class="row">
+                        <div class="col-12 text-right mb-2">
+                            <label for="">Historia Clínica Nro.</label>
+                            <div class="inp_conc-cont">
+                                <input type="text" class="inp_conc"/>
+                            </div>
+                        </div>
+                    </div>
+
+                    <h5 class="text-center">
+                        CONSENTIMIENTO INFORMADO PARA LA PRACTICA DE TRATAMIENTOS ODONTOLÓGICOS, E INTERVENCIONES QUIRURGICAS Y/O PROCEDIMIENTOS ESPECIALES, DERIVADOS DE LA RELACION DOCENCIA SERVICIO FACULTAD DE ODONTOLOGÍA.
+                    </h5>
+
+                    <h6 class="text-center">(Otorgado en cumplimientos de la Ley 35 de 1989)</h6>
+
+                    <div>
+                        <div class="form-inline mb-2">
+                            <label class="mr-2 form-label">Convenio: </label>
+                            <div class="inp_conc-cont">
+                                <input type="text" class="inp_conc"/>
+                            </div>
+                        </div>
+                        <div class="form-inline mb-2">
+                            <label class="mr-2">NOMBRE DEL PACIENTE:</label>
+                            <div class="inp_conc-cont">
+                                <input type="text" class="inp_conc"/>
+                            </div>
+                        </div>
+                        <div class="form-inline mb-2">
+                            <label class="mr-2">NOMBRE DEL REPRESENTANTE LEGAL DEL PACIENTE:</label>
+                            <div class="inp_conc-cont">
+                                <input type="text" class="inp_conc"/>
+                            </div>
+                        </div>
+                        <div class="form-inline mb-2">
+                            <label class="mr-2">CALIDAD DEL REPRESENTANTE LEGAL:</label>
+                            <div class="inp_conc-cont">
+                                <input type="text" class="inp_conc"/>
+                            </div>
+                        </div>
+                        <div class="form-inline mb-2">
+                            <label class="mr-2">FECHA:</label>
+                            <div class="inp_conc-cont">
+                                <input type="date" class="inp_conc"/>
+                            </div>
+                        </div>
+                        <div class="form-inline mb-2">
+                            <label class="mr-2">CIUDAD:</label>
+                            <div class="inp_conc-cont">
+                                <input type="text" class="inp_conc"/>
+                            </div>
+                        </div>
+                    </div>
+
+                    <article class="mt-3">
+                        1. Yo, <div class="inp_conc-cont w-75">
+                            <input type="text" class="inp_conc"/>
+                        </div>
+                        identificado (a) como aparece al pie de mi firma, por medio del presente documento, en nombre propio o en mi calidad del representante legal del paciente en pleno y normal uso de mis facultades mentales otorgo en forma libre mi consentimiento al odontólogo(a) 
+                        <span><div class="inp_conc-cont w-75">
+                                <input type="text" class="inp_conc"/>
+                            </div></span>
+                        y el estudiante
+                        <span><div class="inp_conc-cont w-75">
+                                <input type="text" class="inp_conc"/>
+                            </div></span>
+
+                        , así como de los auxiliares y técnicos en ejercicio legal de su profesión, practiquen el siguiente tratamiento odontológico y/o intervención quirúrgica a través de los siguientes procedimientos:
+                        
+                        <div class="inp_conc-cont w-100 mb-3">
+                            <input type="text" class="inp_conc"/>
+                        </div>
+    
+                        <div>
+                            El pronóstico del tratamiento a realizar es:
+                            <mat-radio-group aria-label="Select an option">
+                                <mat-radio-button class="mr-2" value="1">Bueno</mat-radio-button>
+                                <mat-radio-button class="mr-2" value="2">Regular</mat-radio-button>
+                                <mat-radio-button class="mr-2" value="3">Malo</mat-radio-button>
+                            </mat-radio-group>
+                        </div>
+                    </article>
+
+                    <article class="mt-3">
+                        2. Así mismo quedan autorizados para llevar a cabo o solicitar la práctica de conductas o procedimientos odontológicos adicionales a los ya autorizados en el punto anterior, cuando el resultado del tratamiento así lo requiera.
+                    </article>
+
+                    <article class="mt-3">
+                        3. Se informa de la existencia de riesgos así:
+
+                        <br>
+                        Generales:
+                        <div class="inp_conc-cont w-100 mb-3">
+                            <input type="text" class="inp_conc"/>
+                        </div>
+
+                        Específicos:
+                        <div class="inp_conc-cont w-100 mb-3">
+                            <input type="text" class="inp_conc"/>
+                        </div>
+
+                        O de aquellos Imprevisibles que por su misma característica no se pueden advertir razonablemente.
+                    </article>
+
+                    <article class="mt-3">4. Como paciente o representante legal, declaro que conozco y comprendo en su totalidad la explicación antes dada y la posibilidad de que estos eventos se presenten en el desarrollo del curso del tratamiento y/o del postoperatorio y acepto todos los riesgos que conlleva los tratamientos a realizar. Acepto que la Odontología no es una ciencia exacta y que con la intervención autorizada se buscará la utilización de los medios idóneos para el caso y los resultados no dependen exclusivamente del odontólogo.</article>
+                    <article class="mt-3">5. Declaro que la información suministrada al odontólogo(a) y/o estudiante, con respecto a las condiciones de salud del paciente son ciertas.</article>
+                    <article class="mt-3">6. El consentimiento y autorización que anteceden han sido otorgados previa evaluación que del paciente ha hecho el/la odontólogo(a) y/o estudiante con el objeto de identificar sus condiciones clínico-patológicas y previa advertencia que el odontólogo(a) y/o estudiante ha hecho al paciente y su representante legal con respecto a los riesgos. Declaro que he recibido amplias y satisfactorias explicaciones sobre el alcance de la intervención y que han sido aclaradas las dudas que he tenido y manifestado al respecto.</article>
+                    <article class="mt-3">7. Se me ha explicado que esta es una relación docencia servicio en la que los procedimientos a realizar son ejecutados por estudiantes de la Facultad de Odontología bajo la supervisión de uno o varios Odontólogos y por lo tanto acepto los tiempos y exigencias que el servicio requiera para el desarrollo correcto del plan de tratamiento a ejecutar por parte del estudiante o estudiantes asignados a mi caso particular.</article>
+                    <article class="mt-3">8. Otorgo mi consentimiento para que la anestesia que pueda llegar a requerirse sea administrada por parte del (la) estudiante encargado(a) con la asesoría del profesional que tiene a su cargo el paciente, por el médico anestesiólogo escogido o aceptado por el Odontólogo(a), si se requiere anestesia general. Autorizo para utilizar el tipo de anestesia que considere más aconsejable para el caso de acuerdo con los antecedentes del mismo y el tipo de intervención que he autorizado o eventual-mente se requiera. Me han sido advertidos los riesgos que para el caso comporta la administración de ANESTESIA de conformidad con la constancia que figura en la historia clínica. He recibido satisfactorias explicaciones a este respecto y las dudas que he tenido y manifestado me han sido aclaradas.</article>
+                    <article class="mt-3">9. He recibido claras instrucciones en el sentido de que el consentimiento que otorgo mediante este documento puede ser revisado o dejado sin efecto por la simple decisión del suscrito tomada antes de la intervención o realización del tratamiento.</article>
+                    <article class="mt-3">10. Autorizo a que con protección de mi identidad pueda utilizarse la información consignada en mi historia clínica al igual los exámenes de laboratorio, de patología, las radiografías, fotografías y modelos de estudio, con fines de enseñanza, investigación, y/o divulgación científica por parte de los miembros de la comunidad académica de la Facultad de Odontología.</article>
+                    <article class="mt-3">11. El paciente debe cumplir las citas previstas para los controles en las condiciones asignadas por los profesionales a cargo. El incumplimiento de las citadas condiciones exime a la Facultad de las condiciones negativas que ello produzca en el tratamiento. El profesional responsable del tratamiento determinará si el (la) paciente, al requerir nueva valoración, debe reiniciar el trámite en el programa de atención de la Facultad.</article>
+                    
+                    <!-- FIRMAS -->
+                    <article class="mt-3">
+                        <div class="row">
+                            <div class="col-6 text-center">
+                                <div class="firma"></div>
+                                <h4 class="mb-0">Firma del paciente</h4>
+                                <p>(representate legal o mayor de edad)</p>
+                                C.C. <span style="width: 130px; border-bottom: 1px solid black; display: inline-block;"></span>
+                            </div>
+
+                            <div class="col-6 text-center">
+                                <div class="firma"></div>
+                                <h4 class="mb-0">Firma estudiante encargado paciente</h4>
+                            </div>
+
+                            <div class="col-6 text-center offset-3">
+                                <div class="firma"></div>
+                                <h4 class="mb-0">Firma del odontólogo</h4>
+                                <h4 class="mb-0">Registro médico</h4>
+                            </div>
+                        </div>
+                    </article>
+
+                    <article class="mt-3">
+                        <h3 class="text-uppercase text-center">Denegación de procedimientos odontológicos</h3>
+                        Yo 
+                        <div class="inp_conc-cont w-75">
+                            <input type="text" class="inp_conc"/>
+                        </div>
+                        identificado con Documento de identidad Número 
+                        <div class="inp_conc-cont">
+                            <input type="text" class="inp_conc"/>
+                        </div>
+                        , actuando en nombre propio o como representante legal del paciente 
+                        <div class="inp_conc-cont w-75">
+                            <input type="text" class="inp_conc"/>
+                        </div>
+                        , declaro que he sido informado(a) de la naturaleza y riesgos del procedimiento propuesto, manifiesto de forma libre y consciente mi denegación para su realización, haciéndome responsable de las consecuencias que puedan derivarse de esta decisión.
+
+                        Procedimiento Denegado:
+
+                        <div class="inp_conc-cont w-100">
+                            <input type="text" class="inp_conc"/>
+                        </div>
+
+                        <div class="inp_conc-cont mt-2">
+                            <input type="date" class="inp_conc"/>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-6 text-center">
+                                <div class="firma"></div>
+                                <h4 class="mb-0">Firma del paciente o del representante legal</h4>
+                                C.C. <span style="width: 130px; border-bottom: 1px solid black; display: inline-block;"></span>
+                            </div>
+                            <div class="col-6 text-center">
+                                <div class="firma"></div>
+                                <h4 class="mb-0">Firma del odontólogo</h4>
+                                C.C. <span style="width: 130px; border-bottom: 1px solid black; display: inline-block;"></span>
+                            </div>
+                        </div>
+                    </article>
+                </div>
+
+                <!-- Consentimiento Procedimiento en Salud -->
+                <div *ngIf="consentimientoSeleccionado(340)">
+                    <h4 class="text-center">DOCUMENTO CONSENTIMIENTO INFORMADO PARA PROCEDIMIENTOS EN SALUD</h4>
+
+                    <div class="row">
+                        <div class="col-4">
+                            <div class="form-group mb-2">
+                                <label class="mr-2">FECHA:</label>
+                                <div class="inp_conc-cont w-100">
+                                    <input type="date" class="inp_conc"/>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-4">
+                            <div class="form-group mb-2">
+                                <label class="mr-2">Programa académico:</label>
+                                <div class="inp_conc-cont w-100">
+                                    <input type="text" class="inp_conc"/>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-4">
+                            <div class="form-group mb-2">
+                                <label class="mr-2">Identificación:</label>
+                                <div class="inp_conc-cont w-100">
+                                    <input type="number" class="inp_conc"/>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <article class="mt-2">
+                        Yo, 
+                        <div class="inp_conc-cont w-75">
+                            <input type="text" class="inp_conc"/>
+                        </div>
+                        mayor de edad e identificado como aparece al pie de mi firma, actuando en mi propio nombre; por medio de la presente manifiesto, de manera expresa y en pleno uso de mis facultades mentales que:
+                    </article>
+
+                    <article class="mt-2">
+                        1. Autorizo al profesional asistencial 
+                        <div class="inp_conc-cont w-75">
+                            <input type="text" class="inp_conc"/>
+                        </div>
+                        y a los demás profesionales de la salud que se requieran, para que en ejercicio legal de su profesión, se me practique el procedimiento
+
+                        <div class="inp_conc-cont w-100">
+                            <input type="text" class="inp_conc"/>
+                        </div>
+                    </article>
+
+                    <article class="mt-2">
+                        2. El profesional me ha explicado claramente la naturaleza y propósito del procedimiento, y me ha informado sobre las ventajas, complicaciones y posibles molestias y riesgos, en particular los siguientes:
+                        <div class="inp_conc-cont w-100">
+                            <input type="text" class="inp_conc"/>
+                        </div>
+                    </article>
+                    <article class="mt-2">3. Me comprometo a cumplir todas las instrucciones pre y post procedimiento que me sean dadas, así como los controles que me sean ordenados por el médico y/o profesional de la salud.</article>
+                    <article class="mt-2">4. Doy constancia que se me ha explicado en lenguaje sencillo, claro y totalmente entendible para mi cada uno de los anteriores puntos, además se me ha permitido hacer todas las preguntas necesarias y que todos los espacios en blanco han sido completados antes de mi firma.</article>
+
+                    <!-- FIRMAS -->
+                    <article class="mt-3">
+                        <div class="row">
+                            <div class="col-6 text-center">
+                                <div class="firma"></div>
+                                <h4 class="mb-0">Firma del usuario</h4>
+                                C.C. <span class="espacio-cedula"></span>
+                            </div>
+
+                            <div class="col-6 text-center">
+                                <div class="firma"></div>
+                                <h4 class="mb-0">Firma del Profesional / Registro Médico</h4>
+                                C.C. <span class="espacio-cedula"></span>
+                            </div>
+
+                            <div class="col-6 text-center offset-3">
+                                <div class="firma"></div>
+                                <h4 class="mb-0">Firma testigo</h4>
+                                C.C. <span class="espacio-cedula"></span>
+                            </div>
+                        </div>
+                    </article>
+                </div>
+                
+                <!-- CONSENTIMIENTO PRUEBA ELISA -->
+                <div *ngIf="consentimientoSeleccionado(341)">
+                    <h4 class="text-center">Consentimiento para Prueba Elisa VIH</h4>
+
+                    <div class="row">
+                        <div class="col-4">
+                            <div class="form-group mb-2">
+                                <label class="mr-2">FECHA:</label>
+                                <div class="inp_conc-cont w-100">
+                                    <input type="date" class="inp_conc"/>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-4">
+                            <div class="form-group mb-2">
+                                <label class="mr-2">Programa académico:</label>
+                                <div class="inp_conc-cont w-100">
+                                    <input type="text" class="inp_conc"/>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-4">
+                            <div class="form-group mb-2">
+                                <label class="mr-2">Identificación:</label>
+                                <div class="inp_conc-cont w-100">
+                                    <input type="number" class="inp_conc"/>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <article class="mt-2">
+                        Yo, 
+                        <div class="inp_conc-cont w-75">
+                            <input type="number" class="inp_conc"/>
+                        </div>
+                        certifico que he recibido información sobre el propósito y beneficio de la prueba, sobre los posibles resultados que pueden ser:
+
+                        <p>1.REACTIVO: Significa que hay una alta probabilidad de infección por el virus de la inmunodeficiencia humana.</p>
+                        <p>2.NO REACTIVO: Hay una baja probabilidad de infección por el virus de inmunodeficiencia humana.</p>
+                        <p>3.INDETERMINADO: Puede estar infectado y la prueba no ser positiva o negativa</p>
+                        <p>Se me ha explicado que los resultados REACTIVO e INDETERMINADO requieren una prueba confirmatoria. He entendido las implicaciones de los probables resultados. En este proceso se me permitió expresar mis dudas y obtuve respuestas satisfactorias a ellas.</p>
+                        <p>Que he recibido consejería pre-test, actividad realizada por un profesional de la salud para prepararme y confrontarme con mis conocimientos, prácticas y conductas sexuales, antes de realizarme la prueba diagnóstica. Así como la necesidad de protegerme en las relaciones sexuales para evitar la infección por el virus de la inmunodeficiencia humana.</p>
+                        <p>Asimismo tengo conocimiento de la confidencialidad de los resultados de esta prueba.</p>
+                        <p>Entiendo que la toma de la muestra es voluntaria y que puedo retractarme en cualquier momento antes de que me sea tomado el examen.</p>
+
+                        <!-- FIRMAS -->
+                        <div class="row">
+                            <div class="col-6 text-center">
+                                <div class="firma"></div>
+                                <h4 class="mb-0">Firma del usuario</h4>
+                                C.C. <span class="espacio-cedula"></span>
+                            </div>
+
+                            <div class="col-6 text-center">
+                                <div class="firma"></div>
+                                <h4 class="mb-0">Firma del Profesional / Registro Médico</h4>
+                                <h6 class="mb-0">Profesional que realizó la concejería</h6>
+                                C.C. <span class="espacio-cedula"></span>
+                            </div>
+                        </div>
+                    </article>
+
+                    <article class="mt-2">
+                        1. Autorizo al profesional asistencial 
+                        <div class="inp_conc-cont w-75">
+                            <input type="number" class="inp_conc"/>
+                        </div>
+                        y a los demás profesionales de la salud que se requieran, para que en ejercicio legal de su profesión, se me practique el procedimiento
+
+                        <div class="inp_conc-cont w-100">
+                            <input type="number" class="inp_conc"/>
+                        </div>
+                    </article>
+
+                    <article class="mt-2">
+                        2. El profesional me ha explicado claramente la naturaleza y propósito del procedimiento, y me ha informado sobre las ventajas, complicaciones y posibles molestias y riesgos, en particular los siguientes:
+                        <div class="inp_conc-cont w-100">
+                            <input type="number" class="inp_conc"/>
+                        </div>
+                    </article>
+                    <article class="mt-2">3. Me comprometo a cumplir todas las instrucciones pre y post procedimiento que me sean dadas, así como los controles que me sean ordenados por el médico y/o profesional de la salud.</article>
+                    <article class="mt-2">4. Doy constancia que se me ha explicado en lenguaje sencillo, claro y totalmente entendible para mi cada uno de los anteriores puntos, además se me ha permitido hacer todas las preguntas necesarias y que todos los espacios en blanco han sido completados antes de mi firma.</article>
+
+                    <!-- FIRMAS -->
+                    <article class="mt-3">
+                        <div class="row">
+                            <div class="col-6 text-center">
+                                <div class="firma"></div>
+                                <h4 class="mb-0">Firma del usuario</h4>
+                                C.C. <span class="espacio-cedula"></span>
+                            </div>
+
+                            <div class="col-6 text-center">
+                                <div class="firma"></div>
+                                <h4 class="mb-0">Firma del Profesional / Registro Médico</h4>
+                                C.C. <span class="espacio-cedula"></span>
+                            </div>
+
+                            <div class="col-6 text-center offset-3">
+                                <div class="firma"></div>
+                                <h4 class="mb-0">Firma testigo</h4>
+                                C.C. <span class="espacio-cedula"></span>
+                            </div>
+                        </div>
+                    </article>
+                </div>
+
+                <!-- FORMULARIO DE CONSENTIMIENTO INFORMADO -->
+                <div *ngIf="consentimientoSeleccionado(342)">
+                    <table class="table table-bordered">
+                        <tbody>
+                            <tr>
+                                <td style="width: 80px;" rowspan="3"></td>
+                                <td>ATENCIÓN AL USUARIO</td>
+                                <td>Codigo: LM_CORPHU_AU_F_01</td>
+                            </tr>
+
+                            <tr>
+                                <td rowspan="2" class="text-center" style="vertical-align: middle;">CONSENTIMIENTO INFORMADO</td>
+                                <td>Versión: 1</td>
+                            </tr>
+
+                            <tr>
+                                <td>Página 1</td>
+                            </tr>
+                        </tbody>
+                    </table>
+
+                    <h4 class="text-center text-uppercase">FORMULARIO DE CONSENTIMIENTO INFORMADO</h4>
+
+                    <p>El Laboratorio de Movimiento Corporal Humano (LM-CORPHU) es un espacio de desarrollo académico dispuesto por el Departamento del movimiento Corporal humano de la facultad de Medicina de la Universidad Nacional de Colombia, que propicia el desarrollo de los componentes de docencia, investigación, extensión y gestión, orientado al fomento de la recuperación de la condición motora y la actividad física de las personas y los colectivos. Se apoya en programas académicos de campo, grupos de investigación y unidades de servicio.</p>
+                    <p>El LM-CORPHU tiene cuatro unidades de servicios, que definen atención a poblaciones con necesidades especiales:</p>
+                    <p>1. Unidad de apoyo terapéutico (UNAT): Tiene por finalidad regular situaciones de disfunción postural y controlar las deficiencias que en el sistema orgánico puedan estar generando alteraciones funcionales.</p>
+                    <p>2. Unidad de apoyo en el fomento del movimiento y actividad física (UNAF): Se dirige a favorecer procesos educativos, de vivencia y de participación en la práctica de actividad física como parte de la vida cotidiana. Establece acciones específicas encaminadas a propiciar mayores oportunidades de comunicación y expresión a través del cuerpo y el movimiento.</p>
+                    <p>3. Unidad de apoyo en condiciones especiales y de esfuerzo (UNACE): Se dirige a afianzar procesos de salud en periodos y grupos en que se adelantan dinámicas de exigencia física especiales definidas por el ejercicio físico y deporte o por condiciones positivas en torno a la demanda física alta a la que se encuentra sometidas estas personas y grupos.</p>
+                    <p>4. Unidad de apoyo en la inclusión de las personas en condición de discapacidad (UNAIS): Establece los mecanismos de integración social de las personas de las personas en situación de la discapacidad, garantizándoles al acceso a la educación, la rehabilitación, la integración laboral y el bienestar social.</p>
+                    <p>Durante su estancia en el LM-CORPHU, el usuario se verá inmerso en un proceso terapéutico a través de una serie de actividades relacionadas entre sí para alcanzar un objetivo. Esta serie de actividades es una Ruta Crítica de todas y cada una de las acciones componentes de los procesos que deben desarrollarse durante un tiempo determinado.</p>
+                    <p>La aplicación del método de la Ruta Critica, abarca desde los estados iniciales en un tratamiento determinado, hasta el desarrollo y finalización de su vinculación con el LM-CORPHU.</p>
+
+                    <article>
+                        Yo, 
+                        <div class="inp_conc-cont w-75">
+                            <input type="text" class="inp_conc"/>
+                        </div>
+                        mayor de edad, identificado con C.C. 
+                        <div class="inp_conc-cont">
+                            <input type="number" class="inp_conc"/>
+                        </div>
+                        actuando en nombre propio o como representante legal de 
+                        <div class="inp_conc-cont w-75">
+                            <input type="text" class="inp_conc"/>
+                        </div>
+
+                        <h4 class="text-center my-3">DECLARO</h4>
+
+                        Que he sido informado por el fisioterapeuta 
+                        <div class="inp_conc-cont w-75">
+                            <input type="text" class="inp_conc"/>
+                        </div>
+                        sobre el plan de tratamiento de Fisioterapia integral realizado en el Laboratorio, del cual he recibido la suficiente información y que puede requerir según mi condición clínica, de procedimientos de diferente naturaleza, como los referidos en el Portafolio de Servicios que me ha sido entregado anexo a este documento. Además, que el resultado depende de forma importante de mi cumplimiento a las sesiones y órdenes fisioterapéuticas y médicas que el programa de tratamiento me determina; la participación es voluntaria, por lo que en cualquier momento puedo rechazar el tratamiento y se me explicaron las posibles consecuencias para mi salud de esta determinación.
+
+                        <p>
+                            fisioterapeutico. Que teniendo en cuenta mi condición de salud y el plan de intervención de fisioterapia que se me va a realizar, se me hizo advertencia de los siguientes riesgos previstos:
+                        </p>
+                        
+                        <p>1. Caídas de su propia altura, de la camilla, del balancín, de las barras paralelas, en la prueba de propiocepción o de las máquinas de entrenamiento.</p>
+                        <p>2. Quemaduras con medios físicos (crioterapia,termoterapia, ultrasonido, electroestimulación)</p>
+                        <p>3. Efectos secundarios asociados al ejercicio físico, por ejemplo fatiga muscular.</p>
+                        <p>4. Cierre del campus universitario.</p>
+                        <div>
+                            5. Otros: 
+                            <div class="inp_conc-cont w-75">
+                                <input type="text" class="inp_conc"/>
+                            </div>
+                        </div>
+                        <p>Se me ha dado la oportunidad de preguntar y aclarar las dudas generadas sobre la atención del servicio, por lo que he recibido la información a satisfacción sobre la atención allí prestada.</p>
+                        <p>A partir de lo enunciado, admito haber leído con detenimiento la información anteriormente expuesta, entiendo plenamente las circunstancias de intervención/interacción que se ofrece en el Laboratorio del Movimiento Corporal Humano y en pleno uso de mis facultades mentales, acepto se me realicen las pruebas y procedimientos incluidos en la ruta crítica, que los profesionales, de las diferentes Unidades de Apoyo del Laboratorio consideren necesarios.</p>
+
+                    </article>
+
+                    <!-- FIRMAS -->
+                    <article class="mt-3">
+                        <div class="row">
+                            <div class="col-6 text-center">
+                                <div class="firma"></div>
+                                <h4 class="mb-0">Firma del  usuario o representante</h4>
+                                C.C. <span class="espacio-cedula"></span>
+                            </div>
+
+                            <div class="col-6 text-center">
+                                <div class="firma"></div>
+                                <h4 class="mb-0">Firma del Fisioterapeuta</h4>
+                                C.C. <span class="espacio-cedula"></span>
+                            </div>
+                        </div>
+                    </article>
+
+                    <hr class="my-5" style="background-color: black; height: 1.2px">
+
+                    <p>Aceptación de Participación en procedimientos con fines académicos e investigativos</p>
+                    <p>En aras de relacionar a los estudiantes de pregrado en fisioterapia con los procedimientos relacionados en las diferentes unidades del LM-CORPHU, con el objeto de fortalecer su proceso académico, es necesario proporcionar espacios de acercamientos a la realidad de la atención a usuarios, en actividades que no comprometen la intimidad del mismo o vayan en contra de sus creencias o ideologías.</p>
+
+                    <article>
+                        Por lo anterior, solicitamos a usted a pruebe la participación, de los estudiantes en formación en el desarrollo del procedimiento de 
+                        <div class="inp_conc-cont w-75">
+                            <input type="text" class="inp_conc"/>
+                        </div>
+                        realizado por el Fisioterapeuta 
+                        <div class="inp_conc-cont w-75">
+                            <input type="text" class="inp_conc"/>
+                        </div>
+                        , para fines docentes o investigativos, previa revisión y conformidad por parte del responsable del tratamiento fisioterapéutico. Acepto se me realicen las pruebas y procedimientos bajo las condiciones de acompañamiento descritas.
+                    </article>
+
+                    <!-- FIRMAS -->
+                    <article class="mt-3">
+                        <div class="row">
+                            <div class="col-6 text-center">
+                                <div class="firma"></div>
+                                <h4 class="mb-0">Firma del  usuario o representante</h4>
+                                C.C. <span class="espacio-cedula"></span>
+                            </div>
+
+                            <div class="col-6 text-center">
+                                <div class="firma"></div>
+                                <h4 class="mb-0">Firma y código del fisioterapeuta en formación</h4>
+                                C.C. <span class="espacio-cedula"></span>
+                            </div>
+                        </div>
+                    </article>
+
+                    <hr class="my-5" style="background-color: black; height: 1.2px">
+
+                    <article>
+                        También se me ha informado de mi derecho de rechazar el tratamiento o a revocar este consentimiento para el procedimiento especifico 
+                        <div class="inp_conc-cont w-75">
+                            <input type="text" class="inp_conc"/>
+                        </div>
+                        y de las consecuencias posibles de esta determinación.
+                    </article>
+
+                    <!-- FIRMAS -->
+                    <article class="mt-3">
+                        <div class="row">
+                            <div class="col-6 text-center">
+                                <div class="firma"></div>
+                                <h4 class="mb-0">Firma del  usuario o representante</h4>
+                                C.C. <span class="espacio-cedula"></span>
+                            </div>
+
+                            <div class="col-6 text-center">
+                                <div class="firma"></div>
+                                <h4 class="mb-0">Firma y código del fisioterapeuta en formación</h4>
+                                C.C. <span class="espacio-cedula"></span>
+                            </div>
+                        </div>
+                    </article>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

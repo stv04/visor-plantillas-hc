@@ -1,0 +1,34 @@
+.contenedor {
+    width: 95%;
+    margin: auto;
+}
+
+.contenido {
+    padding: .8em;
+    height: calc(100vh - 180px);
+    background-color: white;
+}
+
+.table-cont {
+    overflow: auto;
+    max-height: calc(100% - 70px);
+}
+
+table {
+    max-height: 100%;
+}
+
+:host::ng-deep table thead > tr{
+    height: 48px;
+}
+
+
+:host::ng-deep table tbody {
+    height: calc(100% - 48px);
+    overflow: hidden;
+}
+
+.contenedor-tabla {
+    overflow: auto;
+    max-height: 70%;
+}

@@ -18,6 +18,12 @@ import {MatTabsModule} from "@angular/material/tabs";
 import {MatTableModule} from '@angular/material/table';
 import {MatCheckboxModule} from "@angular/material/checkbox";
 import {MatRadioModule} from '@angular/material/radio';
+import {MatDatepickerModule} from '@angular/material/datepicker';
+import {MatNativeDateModule} from '@angular/material/core';
+import { MatTreeModule } from '@angular/material/tree';
+import { PortalModule } from '@angular/cdk/portal';
+import { MatExpansionModule } from '@angular/material/expansion';
+import {MatSlideToggleModule} from '@angular/material/slide-toggle';
 
 @NgModule({
   declarations: [],
@@ -40,7 +46,13 @@ import {MatRadioModule} from '@angular/material/radio';
     MatTabsModule,
     MatTableModule,
     MatCheckboxModule,
-    MatRadioModule
+    MatRadioModule,
+    MatDatepickerModule,
+    MatNativeDateModule,
+    MatTreeModule,
+    PortalModule,
+    MatExpansionModule,
+    MatSlideToggleModule
   ]
 })
 export class MaterialModule { }
